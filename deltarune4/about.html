@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deltarune移植版 - 必读说明</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+        }
+        
+        body {
+            background-color: #1E1E1E;
+            color: #FFFFFF;
+            line-height: 1.5;
+            padding: 10px;
+            min-height: 100vh;
+        }
+        
+        .scroll-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .header {
+            background-color: #333333;
+            color: #FFFFFF;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 15px;
+            text-align: center;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            color: #FF0000;
+            padding: 10px;
+            background-color: rgba(255, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .important {
+            color: #00FFFF;
+            padding: 10px;
+            background-color: rgba(0, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .link {
+            color: #FFFFFF;
+            background-color: #00669F;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .link:hover {
+            background-color: #0088cc;
+        }
+        
+        .normal {
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .caution {
+            color: #FF9E00;
+            padding: 10px;
+            background-color: rgba(255, 158, 0, 0.1);
+            border-radius: 4px;
+        }
+        
+        .credit {
+            color: #00FF8F;
+            padding: 10px;
+            background-color: rgba(0, 255, 143, 0.1);
+            border-radius: 4px;
+        }
+        
+        .footer {
+            color: #FF9E00;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            border: 1px solid #FF9E00;
+            border-radius: 4px;
+        }
+        
+        .highlight {
+            font-weight: bold;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #555, transparent);
+            margin: 15px 0;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 5px;
+            }
+            
+            .scroll-container {
+                padding: 5px;
+            }
+            
+            .header {
+                font-size: 20px;
+                padding: 12px;
+            }
+            
+            .link {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-container">
+        <div class="content">
+            <div class="header">重要说明 README (2025-7-3 更新)</div>
+            <div class="warning">
+                <div>郑重提醒：本程序不是官方发行的版本，是相关爱好者发布的第三方移植版本。</div>
+                <div>发布本移植版本的渠道只有Bilibili上的沐白_Official(UID:34627290)、秋冥散雨_GenOuka(UID:3493116076100126)、C-G_O_A_T(UID:520321776)。</div>
+                <div>参考发布视频：https://bilibili.com/BV19DKyzmER3</div>
+                <div>如果你在其他非上述的任何平台下载到本版本，它们都是未经授权的三次发行版本，比如7723游戏盒、虫虫助手、Youtube，我们不会上传到这些平台。</div>
+                <div class="divider"></div>
+                <div>Reminder: This program is not an official release.</div>
+            </div>
+            
+            <div class="important">
+                <div>Deltarune（三角符文）为付费游戏，请务必在Steam购买正版游戏后游玩本移植版游戏。</div>
+                <div class="divider"></div>
+                <div>Deltarune is a paid game, so be sure to play this port after purchasing the original game on Steam.</div>
+            </div>
+            
+            <div class="link" onclick="window.open('https://deltarune.com/', '_blank')">
+                👉🏻👉🏻👉🏻https://deltarune.com/
+            </div>
+            
+            <div class="normal">
+                <div>请尊重狗狗（Toby Fox）的劳动成果，狗狗不会原谅盗版玩家！</div>
+                <div class="divider"></div>
+                <div>Please respect Toby Fox's labor, Dog will not forgive pirates!</div>
+            </div>
+            
+            <div class="caution">
+                <div>绝对绝对禁止将本程序用于盈利用途！</div>
+                <div class="divider"></div>
+                <div>For-profit use of the Program is prohibited!</div>
+            </div>
+            
+            <div class="credit">
+                <div>（以下排名均不分先后）</div>
+                <div>汉化文本：好人汉化组</div>
+                <div>移植工作：沐白_official、C_G-O-A-T、秋冥散雨_GenOuka</div>
+                <div>移植参考：hndteam</div>
+                <div>Deltarune 原作者：Toby Fox</div>
+                <div class="divider"></div>
+                <div>遇到移植版本特定问题请优先联系移植工作者，遇到非移植版本特定问题的汉化问题请联系汉化文本工作者，遇到非以上问题的原本游戏存在的bug请联系游戏作者反映。</div>
+                <div>遇到问题请优先上网查询相关信息。</div>
+            </div>
+            
+            
+            <div class="caution">
+                <h2>使用详细说明（请务必仔细阅读）</h2>
+                <div>进入游戏后按系统返回按键唤出虚拟键盘，可以切换三种风格的键盘：无内置、MK、Joystick。</div>
+                <div></div>
+                <div>进入游戏后按左上角半透明的〖扳手〗按键唤出游戏选项菜单。</div>
+                <div>加载预设按键配置：请不要随便开启，除非你确定必须这么做。本功能适用于外置键盘，配置的绑定按键为Z对应Z，X对应2，C对应3。</div>
+                <div>内置修改存档功能：目前还是一项非常先进的实验性功能，可以直接在游戏内完成存档修改工作。可能发生坏档，请做好存档备份。</div>
+                <div>同步存档：点击后会同步 /data/data/包名/files/、/sdcard/Android/data/包名/files/、/sdcard/Android/media/包名/当前存档 中时间最新的存档和配置，因此在更改三个目录任意一个的文件之后，点同步都能应用存档。</div>
+                <div>请注意：初次启动游戏、退出游戏、从游戏切到后台、从后台回到游戏时会自动同步存档！</div>
+                <div>禁用修改器菜单：这是个鸡肋功能，给那些有强迫症管不住自己想修改的手的君子用的，不小心启用后删除 /sdcard/Android/data/包名/cache/.genouka_disablemenu 文件即可恢复。 </div>
+            </div>
+            <div class="footer">
+                <div>如您已阅读并同意遵守上列内容，请按此处进入游戏</div>
+                <div>(拜托认真读一下，这真的很重要🙏)</div>
+                <div>本提示会在第一次启动时出现，之后如果想要再次查看请点击左上角扳手图标菜单中的帮助</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.footer').addEventListener('click', function() {
+            Android.close();
+        });
+    </script>
+</body>
+</html>

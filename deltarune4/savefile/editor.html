@@ -1,0 +1,673 @@
+﻿<html>
+<head>
+  <title>Editor</title>
+
+
+    <meta name="author" content="">
+    <meta http-equiv="content-type" content="text/html; charset = UTF-8">
+
+    <meta name="theme-color" content="#000000">
+
+    <meta name="robots" content="noindex,nofollow">
+
+  <link rel="icon" href="https://spamton.com/favicon.ico">
+  <script src="../../lib/jquery.min.js"></script>
+  <link rel="stylesheet" href="../../css/deltarune2savefile.css?nocache=101">
+  <link rel="stylesheet" href="../../lib/jquery-ui.css">
+<script src="../../lib/jquery-ui.min.js"></script>
+  <!--<script src="/socket.io/socket.io.js"></script>-->
+<script src="../../lib/jquery.tancolor.js"></script>
+  <link href="../../css2-1?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+
+<script src="../../lib/FileSaver.min.js"></script>
+<script src="../../js/dataNames4.js?nocache=101"></script>
+<script src="../../js/generateInput.js?nocache=101"></script>
+<script src="../../js/extraFunctions.js?nocache=101"></script>
+<script src="../../js/generateFormCh4.js?nocache=101"></script>
+<script src="../../js/thrasher.js?nocache=101"></script>
+<script src="../../js/goner.js?nocache=101"></script>
+<script src="../../js/eruda.js"></script>
+
+<script>
+function convertStringToObject(str) {
+    const lines = str.split('\n');
+    const result = {};
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (line.trim() !== '') {  // 检查非空行（忽略首尾空白）
+            const lineNumber = i + 1;  // 行号从1开始计数
+            result[`_${lineNumber}`] = line.trim();
+        }
+    }
+    return result;
+}
+var saveData = convertStringToObject(Android.readFile11());
+//@bilibili:genouka
+var _col1 = colorToRGB(saveData[`_776`]);
+var _col2 = colorToRGB(saveData[`_777`]);
+var _col3 = colorToRGB(saveData[`_778`]);
+
+var allow_broken_party = false;
+
+
+$(function(){
+
+  if(saveData["err"] != null){
+    console.log(saveData["err"]);
+  }
+
+
+  $("#page_tabs").html(`
+
+      <div class='tab_click' tab='tab_main'>主要(实验性)</div>
+      <div class='tab_click' tab='tab_party'>队伍(实验性)</div>
+      <div class='tab_click' tab='tab_items'>物品</div>
+      <div class='tab_click' tab='tab_recruits'>招募</div>
+      <div class='tab_click' tab='tab_hometown'>小镇(实验性)</div>
+      <div class='tab_click' tab='tab_chapter1'>第1章节</div>
+      <div class='tab_click' tab='tab_chapter2'>第2章节</div>
+      <div class='tab_click' tab='tab_all'>显示全部</div>
+
+    `);
+
+    function switchTab(tab){
+      if(tab != "tab_all"){
+        $(`.tab`).css({"display":"none"});
+        $(`#${tab}`).css({"display":"inherit"});
+      }else{
+        $(`.tab`).css({"display":"inherit"});
+      }
+
+
+
+        $(`.tab_click`).removeClass("tab_selected");
+        $(`.tab_click[tab='${tab}']`).addClass("tab_selected");
+
+    }
+
+    $("#page_tabs").on('click','.tab_click',function(){
+      switchTab($(this).attr("tab"));
+    });
+
+
+
+
+  $("body").on('change','select',function(){
+    var enabled = true;
+    if($(this).val() == 0 && $(this).parent().attr('class').indexOf('grey_disable') != -1){
+      enabled = false;
+    }
+
+    if(enabled){
+      $(this).css({"color":"#FFFFFF"});
+    }
+    else{
+      $(this).css({"color":"#777777"});
+    }
+
+    updateStatus();
+
+
+    //This is the party logic
+    var _name = $(this).attr('name');
+    if(_name == "_8" || _name == "_9" || _name == "_10"){
+      //slot1
+
+
+      SetValidParty($(`select[name="_8"]`).val(),$(`select[name="_9"]`).val(),$(`select[name="_10"]`).val());
+
+    }
+
+
+    if(_name == "_773" || _name == "_774" || _name == "_775" || _name == "_776" || _name == "_777" || _name == "_778"){
+      updateThrasher();
+    }
+
+
+    if(_name = 'public_save_type'){
+      updateDownloadChapter();
+    }
+
+
+
+  });
+
+
+  function updateDownloadChapter(){
+    var save_type = $(`select[name='public_save_type']`).val();
+
+    var public_href = '../../dl/1750857824572/685bf86017c67992e64e8a72/filech4_0';
+    var public_text = "Public Save File Link";
+
+    if(save_type == 1){
+
+      var oldFile = "filech4_0";
+      var convertName = oldFile;
+      if(convertName.indexOf('filech2') != -1){
+        convertName = convertName.replace('filech2','filech1');
+      }else{
+        convertName = "filech1_0";
+      }
+
+      public_href = `../../dl/1750857824572/685bf86017c67992e64e8a72/ch1/${convertName}`;
+      public_text = "Public Save File Link (Converted to Chapter 1)";
+    }
+
+    
+
+  }
+  updateDownloadChapter();
+
+  $("body").on('change','input',function(){
+
+
+    var _name = $(this).attr('name');
+
+    updateStatus();
+
+    if(_name == "_1453" || _name == "_1454" || _name == "_1455"){
+      updateGoner(1453,1454,1455);
+    }
+
+
+    var enabled = true;
+
+    if($(this).attr('type') == "checkbox"){
+      if(!this.checked){
+        enabled = false;
+      }
+    }
+
+
+    if(enabled){
+      $(this).parent().css({"color":"#FFFFFF"});
+    }
+    else{
+      $(this).parent().css({"color":"#777777"});
+    }
+
+    if($(this).attr('name') == "show_all_recruits"){
+      if(this.checked){
+        $(".unused_recruit").css({
+          "display":"block"
+        });
+      }else{
+        $(".unused_recruit").css({
+          "display":"none"
+        });
+      }
+
+    }
+
+    if($(this).attr('name') == "show_all_rooms"){
+      if(this.checked){
+        $(".room_id").html(generateSelectCh2(`_3054`,"房间编码",$(`select[name="_3054"]`).val(),rooms_all));
+
+      }else{
+
+        $(".room_id").html(generateSelectCh2(`_3054`,"房间编码",$(`select[name="_3054"]`).val(),rooms));
+
+      }
+
+    }
+
+
+    if($(this).attr('name') == "show_all_recruits_cafe"){
+      if(this.checked){
+        $(".unused_recruit_cafe").css({
+          "display":"block"
+        });
+      }else{
+        $(".unused_recruit_cafe").css({
+          "display":"none"
+        });
+      }
+
+    }
+
+    if($(this).attr('name') == "allow_broken_party"){
+      if(this.checked){
+        allow_broken_party = true;
+
+      }else{
+        allow_broken_party = false;
+        $(".broken_party").removeClass('broken_party');
+      }
+
+      SetValidParty($(`select[name="_8"]`).val(),$(`select[name="_9"]`).val(),$(`select[name="_10"]`).val());
+    }
+
+
+
+
+
+  });
+
+
+
+  function SetValidParty(val1,val2,val3){
+
+        val1 = parseInt(val1);
+        val2 = parseInt(val2);
+        val3 = parseInt(val3);
+
+
+    var val1_arr = [1];
+    var val2_arr = [0];
+    var val3_arr = [0];
+
+
+
+    if(allow_broken_party){
+      val1_arr = [0,1,2,3,4];
+      val2_arr = [0,1,2,3,4];
+      val3_arr = [0,1,2,3,4];
+    }else{
+      val1_arr = [1];
+      val2_arr = [];
+      val3_arr = [];
+      if(val2 != 0){
+
+        if(val3 == 0){
+          val2_arr.push(0);
+        }
+
+        for(var i = 2; i < 5; i++){
+          if(i != val3){
+            val2_arr.push(i);
+          }
+        }
+
+        val3_arr.push(0);
+        for(var i = 2; i < 5; i++){
+          if(i != val2){
+            val3_arr.push(i);
+          }
+        }
+
+      }else{
+        val2_arr = [2,3,4];
+        val3_arr = [0];
+      }
+
+    }
+    var final_arr = [val1_arr,val2_arr,val3_arr];
+    for(var j = 0; j < 3; j++){
+
+        $(`select[name="_${j+8}"]`).find('option').each(function(){
+          var allowed = false;
+          for(var i = 0; i < final_arr[j].length; i++){
+            if(`${final_arr[j][i]}` === $(this).val()){
+              allowed = true;
+            }
+          }
+          if(allowed){
+            $(this).removeClass('broken_party');
+          }else{
+            $(this).addClass('broken_party');
+          }
+        });
+    }
+
+
+
+
+
+    $("#party_display").html(`${getPartyImage(val1)} ${getPartyImage(val2)} ${getPartyImage(val3)}`);
+
+    function getPartyImage(val){
+      var str = "<span style='vertical-align:bottom;width:40px;height:40px;display:inline-block;'></span>";
+      switch(val){
+        case 1:
+          str = "<img src='../../images/Kris.png'>";
+          break;
+        case 2:
+          str = "<img src='../../images/Susie.png'>";
+          break;
+        case 3:
+          str = "<img src='../../images/Ralsei.png'>";
+          break;
+        case 4:
+          str = "<img src='../../images/Noelle.png'>";
+          break;
+      }
+      return str;
+    }
+
+  }
+
+
+
+
+  $("body").on('click','.spells_title',function(){
+    var display = 'flex';
+    var text = `<center>^ 技能 ^</center>`;
+    if($(this).parent().find(".spell_wrapper").css("display") == 'flex'){
+      display = 'none';
+
+      text = `<center>v  技能 v</center>`
+
+
+    }
+    $(this).html(text);
+    $(this).parent().find(".spell_wrapper").css({"display":display})
+  });
+
+  try{
+    $("#saveData").html(generateForm(saveData));
+  } catch(err){
+    console.log(err);
+    $("#js_err_010").css({"display":"none"});
+    $("#js_err_202").css({"display":"inherit"});
+  }
+
+
+  $( "#thrash_head_c_slider" ).slider({
+      min: 0,
+      max: 31,
+      value: parseInt($( `input[name="_776"]` ).val()),
+      slide: function( event, ui ) {
+          $( `input[name="_776"]` ).val( ui.value );
+          updateThrasher();
+      }
+  });
+
+  $( "#thrash_body_c_slider" ).slider({
+      min: 0,
+      max: 31,
+      value: parseInt($( `input[name="_777"]` ).val()),
+      slide: function( event, ui ) {
+          $( `input[name="_777"]` ).val( ui.value );
+          updateThrasher();
+      }
+  });
+
+  $( "#thrash_feet_c_slider" ).slider({
+      min: 0,
+      max: 31,
+      value: parseInt($( `input[name="_778"]` ).val()),
+      slide: function( event, ui ) {
+          $( `input[name="_778"]` ).val( ui.value );
+          updateThrasher();
+      }
+  });
+
+
+  function updateThrasher(){
+    var _col1 = colorToRGB($(`input[name='_776']`).val());
+    var _col2 = colorToRGB($(`input[name='_777']`).val());
+    var _col3 = colorToRGB($(`input[name='_778']`).val());
+    GenerateThrasher($(`select[name='_773']`).val(),$(`select[name='_774']`).val(),$(`select[name='_775']`).val(),_col1,_col2,_col3);
+
+    $("#thrash_head_c").css({"background-color":`rgb(${_col1[0]},${_col1[1]},${_col1[2]})`});
+    $("#thrash_body_c").css({"background-color":`rgb(${_col2[0]},${_col2[1]},${_col2[2]})`});
+    $("#thrash_feet_c").css({"background-color":`rgb(${_col3[0]},${_col3[1]},${_col3[2]})`});
+
+  }
+  updateThrasher();
+
+
+
+  function Int(_str){
+    return parseInt(_str.replace(/[^0-9.-]+/g,""));
+  }
+
+
+  function updateStatus(){
+    var lv_kris = "2";
+    var lv_susie = "2";
+    var lv_ralsei = "2";
+    var lv_noelle = "1";
+    var status_kris = "Leader";
+    var status_susie = "Dark Knight";
+    var status_ralsei = "Dark Prince";
+    var status_noelle = "Snowcaster";
+    var desc_kris = "Commands the party<br>with various ACTs.";
+    var desc_susie = "Does damage using<br>dark energy";
+    var desc_ralsei = "Dark-World being.<br>Has friends now.";
+    var desc_noelle = "Might be able to<br>use some cool moves.";
+
+
+    if(Int($(`input[name='_3053']`).val()) >= 60){
+      status_kris = "Tactician";
+      desc_kris = "Commands the party<br>by ACTs. Sometimes.";
+    }
+
+    if(Int($(`input[name='_3053']`).val()) >= 95){
+      status_susie = "Healing Master";
+      desc_susie = "Can use ultimate<br>healing. (Losers!)";
+    }
+
+    if(Int($(`input[name='_3053']`).val()) >= 200){
+      lv_kris = "3";
+      lv_susie = "3";
+      lv_ralsei = "3";
+    }
+
+
+    if(Int($(`input[name='_1478']`).val()) > 0){
+      status_noelle = "Frostmancer";
+      desc_noelle = "Freezes the enemy.";
+      lv_noelle = lv_kris;
+    }
+
+
+    if(Int($(`select[name='_805']`).val()) > 0){
+      status_kris = "Bed Inspector";
+      desc_kris = "Inspects all beds<br>inexplicably.";
+    }
+
+
+    if(Int($(`select[name='_1474']`).val()) > 0 && Int($(`input[name='_1468']`).val()) <= 0){
+      status_noelle = "Moss Neutral";
+      desc_noelle = "Neither chaotic nor<br>lawful to moss.";
+      lv_noelle = lv_kris;
+    }
+
+
+    if(Int($(`select[name='_1473']`).val()) > 0){
+      status_kris = "Moss Finder";
+      desc_kris = "Basic moss-finding<br>abilities.";
+    }
+
+
+    if(Int($(`select[name='_1475']`).val()) > 0){
+      status_susie = "Moss Enjoyer";
+      desc_susie = "Supports those<br>that find moss.";
+    }
+
+    if(Int($(`select[name='_878']`).val()) == 1){
+      status_ralsei = "Hug Prince";
+      desc_ralsei = "Receives and<br>gives many hugs.";
+    }else if(Int($(`select[name='_878']`).val()) == 2){
+      status_ralsei = "Pose Prince";
+      desc_ralsei = "Poses for photos<br>at times.";
+    }else if(Int($(`select[name='_878']`).val()) == 3){
+      status_ralsei = "Rude Prince";
+      desc_ralsei = "Friends with a <br>rude gesturer.";
+    }else if(Int($(`select[name='_878']`).val()) == 4){
+      status_ralsei = "Blank Prince";
+      desc_ralsei = "Doesn't even<br>have a photo.";
+    }
+
+
+
+    if(Int($(`input[name='_1468']`).val()) > 0){
+      status_kris = "Leader";
+      desc_kris = "Commands.";
+    }
+
+
+    $("#status_kris").html(`LV${lv_kris} ${status_kris}<br><div class='status_desc'>${desc_kris}</div>`);
+    $("#status_susie").html(`LV${lv_susie} ${status_susie}<br><div class='status_desc'>${desc_susie}</div>`);
+    $("#status_ralsei").html(`LV${lv_ralsei} ${status_ralsei}<br><div class='status_desc'>${desc_ralsei}</div>`);
+    $("#status_noelle").html(`LV${lv_noelle} ${status_noelle}<br><div class='status_desc'>${desc_noelle}</div>`);
+
+
+  }
+
+  updateStatus();
+
+
+updateGoner(1453,1454,1455);
+switchTab("tab_main");function mergeObjects() {
+
+var result = {};
+
+// 遍历所有传入的对象
+
+for (var i = 0; i < arguments.length; i++) {
+
+var obj = arguments[i];
+
+// 遍历当前对象的所有属性
+
+for (var key in obj) {
+
+// 确保只复制对象自身的属性（非继承属性）
+
+if (obj.hasOwnProperty(key)) {
+
+result[key] = obj[key];
+
+}
+
+}
+
+}
+
+return result;
+
+}
+
+
+function objectToMultilineString(obj, totalLines) {
+    const lines = Array(totalLines).fill(''); // 创建总行数的空行数组
+    
+    // 填充非空行内容
+    for (const [key, value] of Object.entries(obj)) {
+        if (key.startsWith('_')) {
+            const lineNum = parseInt(key.substring(1));
+            if (lineNum > 0 && lineNum <= totalLines) {
+                lines[lineNum - 1] = value;
+            }
+        }
+    }
+    
+    return lines.join('\n');
+}
+window.debugclick=0;
+$(".ahc").on('click',function(){
+    window.debugclick=window.debugclick+1;
+    if(window.debugclick==8){
+      eruda.init();
+    }
+  });
+
+  SetValidParty($(`select[name="_8"]`).val(),$(`select[name="_9"]`).val(),$(`select[name="_10"]`).val());
+  $(".submitButton").on('click',function(){
+    var formdata = parseFormData();
+    console.log(formdata);
+    var data = objectToMultilineString(mergeObjects(saveData,formdata),3055);
+    console.log(data);
+      Android.writeSyncT(data);
+      if(window.debugclick<8){
+      Android.closeDialogT();
+      }
+
+  });
+
+
+  $('#uploadForm').submit(function(e) {
+      e.preventDefault();
+    });
+
+
+    function parseFormData(){
+      formData = {};
+
+      $("select").each(function(){
+        if($(this).attr('noinput') != "true"){
+          formData[$(this).attr('name')] = $(this).val();
+        }
+      });
+
+      $("input").each(function(){
+        if($(this).attr('noinput') != "true"){
+          var inputData = "0";
+          if($(this).attr("type") == "checkbox"){
+
+            var _off = "0";
+            var _on = "1";
+
+            if($(this).attr("off")){
+              _off = $(this).attr("off");
+            }
+
+            if($(this).attr("on")){
+              _on = $(this).attr("on");
+            }
+            inputData = ($(this).prop('checked') ? _on : _off);
+          }else{
+            inputData = $(this).val();
+          }
+
+
+            formData[$(this).attr('name')] = inputData;
+          }
+      });
+      return formData;
+    }
+
+
+
+
+
+
+});
+
+
+
+</script>
+
+
+</head>
+<body>
+<center><h1>补丁内置存档修改器v3.5</h1></center>
+<center>在修改前请备份你的存档。<br>由于正在开发当中，本版本可能会损坏你的存档。</center><br><br><br>
+<div id='page_tabs'></div>
+
+<div id='uploadForm'>
+<div id='saveData'>
+  <div id='js_err_010'>
+<br><br><br>
+<h1><center>加载错误，联系开发者解决</center></h1>
+</div>
+<div id='js_err_202' style="display:none">
+<br><br><br>
+<h1><center>There was an error loading the Save Editor.<br>ERR Code: ERJS202</center></h1>
+</div>
+</div>
+
+<br><br><br>
+<center><div class='submitButton'>确认修改（请事先备份）</div></center>
+</div>
+
+<br>
+<center>
+保存类型：<select name="public_save_type">`
+<option value="4" selected="">Chapter 4</option>
+</select><br><br>
+
+<p  class="ahc">由Bilibili:@秋冥散雨_GenOuka完成所有界面的汉化和修改工作，均为手工翻译。原版修改器(英文)：https://saveeditor.spamton.com/</p>
+</center>
+
+<br><br><br><br><br>
+
+<center>
+
+</center>
+
+
+</body>
+</html>
