@@ -113,7 +113,7 @@
       formString += "<br>";
       formString += generateSelectCh1(`_79`,"<img src='../../images/Armor2.png'>",data[`_79`],armorCh1,'grey_disable');
       formString += "<br><hr>";
-      formString += "<div class='spells_title'><center>v  技能 v</center></div>";
+      formString += "<div class='spells_title'><center>▼ 技能 ▼</center></div>";
 
       formString += "<div class='spell_wrapper'>"
       for(var i = 0; i < 6; i++){
@@ -151,7 +151,7 @@
       formString += "<br>";
       formString += generateSelectCh1(`_133`,"<img src='../../images/Armor2.png'>",data[`_133`],armorCh1,'grey_disable');
       formString += "<br><hr>";
-      formString += "<div class='spells_title'><center>v  技能 v</center></div>";
+      formString += "<div class='spells_title'><center>▼ 技能 ▼</center></div>";
 
       formString += "<div class='spell_wrapper'>"
       for(var i = 0; i < 6; i++){
@@ -188,7 +188,7 @@
       formString += "<br>";
       formString += generateSelectCh1(`_187`,"<img src='../../images/Armor2.png'>",data[`_187`],armorCh1,'grey_disable');
       formString += "<br><hr>";
-      formString += "<div class='spells_title'><center>v  技能 v</center></div>";
+      formString += "<div class='spells_title'><center>▼ 技能 ▼</center></div>";
 
       formString += "<div class='spell_wrapper'>"
       for(var i = 0; i < 6; i++){

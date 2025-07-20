@@ -120,7 +120,7 @@ function generateForm(data){
     formString += "<br>";
     formString += generateSelectCh2(`_87`,"<img src='../../images/Armor2.png'>",data[`_87`],armor,'grey_disable');
     formString += "<br><hr>";
-    formString += "<div class='spells_title'><center>v  技能 v</center></div>";
+    formString += "<div class='spells_title'><center>▼ 技能 ▼</center></div>";
 
     formString += "<div class='spell_wrapper'>"
     for(var i = 0; i < 6; i++){
@@ -158,7 +158,7 @@ function generateForm(data){
     formString += "<br>";
     formString += generateSelectCh2(`_149`,"<img src='../../images/Armor2.png'>",data[`_149`],armor,'grey_disable');
     formString += "<br><hr>";
-    formString += "<div class='spells_title'><center>v  技能 v</center></div>";
+    formString += "<div class='spells_title'><center>▼ 技能 ▼</center></div>";
 
     formString += "<div class='spell_wrapper'>"
     for(var i = 0; i < 6; i++){
@@ -195,7 +195,7 @@ function generateForm(data){
     formString += "<br>";
     formString += generateSelectCh2(`_211`,"<img src='../../images/Armor2.png'>",data[`_211`],armor,'grey_disable');
     formString += "<br><hr>";
-    formString += "<div class='spells_title'><center>v  技能 v</center></div>";
+    formString += "<div class='spells_title'><center>▼ 技能 ▼</center></div>";
 
     formString += "<div class='spell_wrapper'>"
     for(var i = 0; i < 6; i++){
@@ -233,7 +233,7 @@ function generateForm(data){
     formString += "<br>";
     formString += generateSelectCh2(`_273`,"<img src='../../images/Armor2.png'>",data[`_273`],armor,'grey_disable');
     formString += "<br><hr>";
-    formString += "<div class='spells_title'><center>v  技能 v</center></div>";
+    formString += "<div class='spells_title'><center>▼ 技能 ▼</center></div>";
 
     formString += "<div class='spell_wrapper'>"
     for(var i = 0; i < 6; i++){

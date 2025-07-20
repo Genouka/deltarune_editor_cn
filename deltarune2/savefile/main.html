@@ -340,11 +340,11 @@ $(function(){
 
   $("body").on('click','.spells_title',function(){
     var display = 'flex';
-    var text = `<center>^ 技能 ^</center>`;
+    var text = `<center>▲ 技能 ▲</center>`;
     if($(this).parent().find(".spell_wrapper").css("display") == 'flex'){
       display = 'none';
 
-      text = `<center>v  技能 v</center>`
+      text = `<center>▼ 技能 ▼</center>`
 
 
     }
@@ -620,7 +620,7 @@ function objectToMultilineString(obj, totalLines) {
 
 </head>
 <body>
-<center><h1>补丁内置存档修改器v4.0</h1></center>
+<center><h1>补丁内置存档修改器v4.0.1</h1></center>
 <br><br><br>
 <div id='page_tabs'></div>
 
