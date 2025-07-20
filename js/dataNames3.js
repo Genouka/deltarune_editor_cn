@@ -238,6 +238,7 @@ var weapons = [
 {value:24,text:`[24]剧毒斧`},
 {value:25,text:`[25]弹性围巾`},
 {value:26,text:`[26]黑色碎片`}
+];
 
 var armor = [
 {value:0, text:`[0]空位`},
