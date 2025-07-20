@@ -26,7 +26,15 @@
 <script src="../../js/generateFormCh3.js?nocache=101"></script>
 <script src="../../js/thrasher-1.js?nocache=101"></script>
 <script src="../../js/goner-1.js?nocache=101"></script>
+<script src="../../js/eruda.js"></script>
 <script>
+window.debugclick=0;
+$(".ahc").on('click',function(){
+    window.debugclick=window.debugclick+1;
+    if(window.debugclick==8){
+      eruda.init();
+    }
+  });
 
 function convertStringToObject(str) {
     const lines = str.split('\n');
@@ -646,7 +654,7 @@ function objectToMultilineString(obj, totalLines) {
 <option value="3" selected="">Chapter 3</option>
 </select><br><br>
 
-<p>由Bilibili:@秋冥散雨_GenOuka完成所有界面、描述文本的汉化和修改工作，均为手工翻译。原版修改器(英文)：https://saveeditor.spamton.com/</p>
+<p id="ahc">由Bilibili:@秋冥散雨_GenOuka完成所有界面、描述文本的汉化和修改工作，均为手工翻译。原版修改器(英文)：https://saveeditor.spamton.com/</p>
 <p>物品名称、房间名称的汉化由Bilibili:@chztd完成</p>
 </center>
 
