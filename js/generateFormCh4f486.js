@@ -391,39 +391,39 @@ function generateForm(data){
     //chapter 1 hometown flags
     formString += "<div id='flags_box'>";
     formString += "Spoken to Characters<br>";
-    formString += generateSelectCh2(`_890`,"Talked to Alvin",data[`_890`],[{value:0,text:`No`},{value:1,text:`About Gerson or Hammer`},{value:2,text:`About Gerson and Hammer`},{value:3,text:`Heard talking to himself`}],'');
-    formString += generateSelectCh2(`_975`,"Talked to Mettaton",data[`_975`],[{value:0,text:`No`},{value:1,text:`About Entertainment`}],'');
-    formString += generateSelectCh2(`_1014`,"Rudy's Hospital Sink",data[`_1014`],[{value:0,text:`Not interacted`},{value:1,text:`Interacted`}],'');
+    formString += generateSelectCh2(`_890`,"Talked to Alvin",data[`_890`],[{value:0,text:`[0]No`},{value:1,text:`[1]About Gerson or Hammer`},{value:2,text:`[2]About Gerson and Hammer`},{value:3,text:`[3]Heard talking to himself`}],'');
+    formString += generateSelectCh2(`_975`,"Talked to Mettaton",data[`_975`],[{value:0,text:`[0]No`},{value:1,text:`[1]About Entertainment`}],'');
+    formString += generateSelectCh2(`_1014`,"Rudy's Hospital Sink",data[`_1014`],[{value:0,text:`[0]Not interacted`},{value:1,text:`[1]Interacted`}],'');
     formString += "</div>";
     
     
     
     formString += "<div id='flags_box'>";
     formString += "Cutscenes<br>";
-    formString += generateSelectCh2(`_861`,"Sans & Toriel Cutscene",data[`_861`],[{value:0,text:`Haven't seen`},{value:1,text:`Watched Cutscene`}],'');
-    formString += generateSelectCh2(`_868`,"Bunker Cutscene",data[`_868`],[{value:0,text:`Haven't seen`},{value:1,text:`Watched Cutscene`}],'');
-    formString += generateSelectCh2(`_869`,"Noelle Hospital Cutscene",data[`_869`],[{value:0,text:`Haven't seen`},{value:1,text:`Watched Cutscene`}],'');
-    formString += generateSelectCh2(`_870`,"Dog Jail Break",data[`_870`],[{value:0,text:`Haven't seen`},{value:1,text:`Watched Cutscene`},{value:2,text:`Jailbreak Tunes`}],'');
-    formString += generateSelectCh2(`_894`,"Susie Refuses to go into Diner",data[`_894`],[{value:0,text:`Haven't seen`},{value:1,text:`Watched Cutscene`}],'');
-    formString += generateSelectCh2(`_933`,"Called Home",data[`_933`],[{value:0,text:`Haven't seen`},{value:1,text:`Watched Cutscene`}],'');
+    formString += generateSelectCh2(`_861`,"Sans & Toriel Cutscene",data[`_861`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Watched Cutscene`}],'');
+    formString += generateSelectCh2(`_868`,"Bunker Cutscene",data[`_868`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Watched Cutscene`}],'');
+    formString += generateSelectCh2(`_869`,"Noelle Hospital Cutscene",data[`_869`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Watched Cutscene`}],'');
+    formString += generateSelectCh2(`_870`,"Dog Jail Break",data[`_870`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Watched Cutscene`},{value:2,text:`[2]Jailbreak Tunes`}],'');
+    formString += generateSelectCh2(`_894`,"Susie Refuses to go into Diner",data[`_894`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Watched Cutscene`}],'');
+    formString += generateSelectCh2(`_933`,"Called Home",data[`_933`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Watched Cutscene`}],'');
     formString += "</div>";
     
     
     
     formString += "<div id='flags_box'>";
     formString += "Onion<br>";
-    formString += generateSelectCh2(`_978`,"Did you miss Onion",data[`_978`],[{value:0,text:`No Answer`},{value:1,text:`Yes`},{value:2,text:`No`}],'');
-    formString += generateSelectCh2(`_977`,"Talked to Onion",data[`_977`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
+    formString += generateSelectCh2(`_978`,"Did you miss Onion",data[`_978`],[{value:0,text:`[0]No Answer`},{value:1,text:`[1]Yes`},{value:2,text:`[2]No`}],'');
+    formString += generateSelectCh2(`_977`,"Talked to Onion",data[`_977`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
     formString += "</div>";
     
     
     
     formString += "<div id='flags_box'>";
     formString += "Other<br>";
-    formString += generateSelectCh2(`_855`,"Ball of Junk",data[`_855`],[{value:0,text:`Not Gathered`},{value:1,text:`On Head`},{value:2,text:`In Dark World`}],'');
-    formString += generateSelectCh2(`_895`,"Box of Chocolate Quest",data[`_895`],[{value:0,text:`Not Recieved`},{value:1,text:`Destroyed`},{value:2,text:`Ate with Susie`},{value:3,text:`Gave to Alphys`}],'');
-    formString += generateSelectCh2(`_983`,"Stole Asriel's money",data[`_983`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-    formString += generateSelectCh2(`_992`,"Reverse Steal Egg",data[`_992`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
+    formString += generateSelectCh2(`_855`,"Ball of Junk",data[`_855`],[{value:0,text:`[0]Not Gathered`},{value:1,text:`[1]On Head`},{value:2,text:`[2]In Dark World`}],'');
+    formString += generateSelectCh2(`_895`,"Box of Chocolate Quest",data[`_895`],[{value:0,text:`[0]Not Recieved`},{value:1,text:`[1]Destroyed`},{value:2,text:`[2]Ate with Susie`},{value:3,text:`[3]Gave to Alphys`}],'');
+    formString += generateSelectCh2(`_983`,"Stole Asriel's money",data[`_983`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+    formString += generateSelectCh2(`_992`,"Reverse Steal Egg",data[`_992`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
 
     formString += "</div>";
     
@@ -532,8 +532,8 @@ function generateForm(data){
       formString += generateSelectCh2(`_1459`,"How do you feel about your creation? (it will not hear.)<br>",data[`_1459`],goner_feel);
 
 
-      formString += generateSelectCh2(`_1460`,"Have you answered honestly?<br>",data[`_1460`],[{value:0,text:`YES`},{value:1,text:`NO`}]);
-      formString += generateSelectCh2(`_1461`,"You acknowledge the possibility of pain and seizure.<br>",data[`_1461`],[{value:0,text:`YES`},{value:1,text:`NO`}]);
+      formString += generateSelectCh2(`_1460`,"Have you answered honestly?<br>",data[`_1460`],[{value:0,text:`[0]YES`},{value:1,text:`[1]NO`}]);
+      formString += generateSelectCh2(`_1461`,"You acknowledge the possibility of pain and seizure.<br>",data[`_1461`],[{value:0,text:`[0]YES`},{value:1,text:`[1]NO`}]);
 
       formString += `</div>`;
       formString += `</div>`;
@@ -545,23 +545,23 @@ function generateForm(data){
       //chapter 1 hometown flags
       formString += "<div id='flags_box'>";
       formString += "Hometown<br>";
-      formString += generateSelectCh2(`_808`,"Noelle Hospital Cutscene",data[`_808`],[{value:0,text:`Haven't seen`},{value:1,text:`Watched Cutscene`},{value:2,text:`Talked to Rudy`}],'');
-      formString += generateSelectCh2(`_809`,"Talked to Berdly",data[`_809`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-      formString += generateSelectCh2(`_810`,"Stuck fingers in Picnic Table",data[`_810`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-      formString += generateSelectCh2(`_811`,"Talked to Onion",data[`_811`],[{value:0,text:`No`},{value:1,text:`Yes`},{value:2,text:`Became Friend`},{value:3,text:`Refused Friendship`}],'');
-      formString += generateSelectCh2(`_812`,"Your Name (Onion)",data[`_812`],[{value:0,text:`None`},{value:1,text:`Kris`},{value:2,text:`Hippopotamus`}],'grey_disable');
-      formString += generateSelectCh2(`_813`,"Onion's Name",data[`_813`],[{value:0,text:`None`},{value:1,text:`Onion`},{value:2,text:`Beauty`},{value:3,text:`Asriel II`},{value:4,text:`Disgusting`}],'grey_disable');
-      formString += generateSelectCh2(`_814`,"Free Hot Chocolate",data[`_814`],[{value:0,text:`Unclaimed`},{value:1,text:`Claimed`}],'');
-      formString += generateSelectCh2(`_815`,"Asgore flower cutscene",data[`_815`],[{value:0,text:`Haven't seen`},{value:1,text:`Entered Flower Shop`},{value:2,text:`Recieved Bouquet`},{value:3,text:`Given Bouquet to Toriel`},{value:4,text:`Toriel threw Bouquet away`}],'');
-      formString += generateSelectCh2(`_818`,"Talked to Catty",data[`_818`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-      formString += generateSelectCh2(`_822`,"Alphys Alleyway Cutscene",data[`_822`],[{value:0,text:`Haven't seen`},{value:1,text:`Watched Cutscene`}],'');
-      formString += generateSelectCh2(`_823`,"Talked to Undyne",data[`_823`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-      formString += generateSelectCh2(`_824`,"Talked to Burgerpants",data[`_824`],[{value:0,text:`No`},{value:1,text:`Yes`},{value:2,text:`Seen dialogue`}],'');
-      formString += generateSelectCh2(`_825`,"Phonecall with Toriel",data[`_825`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-      formString += generateSelectCh2(`_826`,"Talked to Sans",data[`_826`],[{value:0,text:`No`},{value:1,text:`Yes`},{value:2,text:`Talked about his brother`}],'');
-      formString += generateSelectCh2(`_827`,"Got Sans's Phone number",data[`_827`],[{value:0,text:`No`},{value:1,text:`Yes`},{value:1,text:`Called it`}],'');
-      formString += generateSelectCh2(`_828`,"Rudy's Hospital Sink",data[`_828`],[{value:0,text:`Not interacted`},{value:1,text:`Interacted`}],'');
-      formString += generateSelectCh2(`_829`,"Talked to Noelle",data[`_829`],[{value:0,text:`No`},{value:1,text:`Yes`},{value:2,text:`Talked about Susie`}],'');
+      formString += generateSelectCh2(`_808`,"Noelle Hospital Cutscene",data[`_808`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Watched Cutscene`},{value:2,text:`[2]Talked to Rudy`}],'');
+      formString += generateSelectCh2(`_809`,"Talked to Berdly",data[`_809`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+      formString += generateSelectCh2(`_810`,"Stuck fingers in Picnic Table",data[`_810`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+      formString += generateSelectCh2(`_811`,"Talked to Onion",data[`_811`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`},{value:2,text:`[2]Became Friend`},{value:3,text:`[3]Refused Friendship`}],'');
+      formString += generateSelectCh2(`_812`,"Your Name (Onion)",data[`_812`],[{value:0,text:`[0]None`},{value:1,text:`[1]Kris`},{value:2,text:`[2]Hippopotamus`}],'grey_disable');
+      formString += generateSelectCh2(`_813`,"Onion's Name",data[`_813`],[{value:0,text:`[0]None`},{value:1,text:`[1]Onion`},{value:2,text:`[2]Beauty`},{value:3,text:`[3]Asriel II`},{value:4,text:`[4]Disgusting`}],'grey_disable');
+      formString += generateSelectCh2(`_814`,"Free Hot Chocolate",data[`_814`],[{value:0,text:`[0]Unclaimed`},{value:1,text:`[1]Claimed`}],'');
+      formString += generateSelectCh2(`_815`,"Asgore flower cutscene",data[`_815`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Entered Flower Shop`},{value:2,text:`[2]Recieved Bouquet`},{value:3,text:`[3]Given Bouquet to Toriel`},{value:4,text:`[4]Toriel threw Bouquet away`}],'');
+      formString += generateSelectCh2(`_818`,"Talked to Catty",data[`_818`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+      formString += generateSelectCh2(`_822`,"Alphys Alleyway Cutscene",data[`_822`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Watched Cutscene`}],'');
+      formString += generateSelectCh2(`_823`,"Talked to Undyne",data[`_823`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+      formString += generateSelectCh2(`_824`,"Talked to Burgerpants",data[`_824`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`},{value:2,text:`[2]Seen dialogue`}],'');
+      formString += generateSelectCh2(`_825`,"Phonecall with Toriel",data[`_825`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+      formString += generateSelectCh2(`_826`,"Talked to Sans",data[`_826`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`},{value:2,text:`[2]Talked about his brother`}],'');
+      formString += generateSelectCh2(`_827`,"Got Sans's Phone number",data[`_827`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`},{value:1,text:`[1]Called it`}],'');
+      formString += generateSelectCh2(`_828`,"Rudy's Hospital Sink",data[`_828`],[{value:0,text:`[0]Not interacted`},{value:1,text:`[1]Interacted`}],'');
+      formString += generateSelectCh2(`_829`,"Talked to Noelle",data[`_829`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`},{value:2,text:`[2]Talked about Susie`}],'');
       formString += generateNumberInput(`_830`,"Times entered house",data[`_830`],{min:0,max:8},'flag');
       formString += "</div>";
 
@@ -571,13 +571,13 @@ function generateForm(data){
 
       formString += "<div class='flags_box'>";
       formString += "Other Flags<br>";
-      formString += generateSelectCh2(`_659`,"Eaten Prison Moss",data[`_659`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
+      formString += generateSelectCh2(`_659`,"Eaten Prison Moss",data[`_659`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
       formString += generateNumberInput(`_794`,"Jevil Quest (?)",data[`_794`],{min:0,max:7},'flag');
-      formString += generateSelectCh2(`_807`,"The Original Starwalker",data[`_807`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
+      formString += generateSelectCh2(`_807`,"The Original Starwalker",data[`_807`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
       formString += generateNumberInput(`_1464`,"Chapter 1 Eggs",data[`_1464`],{min:-99999,max:99999},'flag');
-      formString += generateSelectCh2(`_805`,"Kris Inspected the Beds",data[`_805`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-      formString += generateSelectCh2(`_806`,"Spin Cake Received",data[`_806`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-      formString += generateSelectCh2(`_760`,"Thrown Away Manual",data[`_760`],[{value:0,text:`No`},{value:1,text:`Dropped once`},{value:2,text:`Thrown Away`}],'');
+      formString += generateSelectCh2(`_805`,"Kris Inspected the Beds",data[`_805`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+      formString += generateSelectCh2(`_806`,"Spin Cake Received",data[`_806`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+      formString += generateSelectCh2(`_760`,"Thrown Away Manual",data[`_760`],[{value:0,text:`[0]No`},{value:1,text:`[1]Dropped once`},{value:2,text:`[2]Thrown Away`}],'');
       formString += "</div>";
 
 
@@ -598,18 +598,18 @@ formString += `<div id="tab_chapter2" class='tab'>`;
     //Other Flags
     formString += "<div id='flags_box'>";
     formString += "Other Flags<br>";
-    formString += generateSelectCh2(`_587`,"Party Members can ACT",data[`_587`],[{value:1,text:`No`},{value:0,text:`Yes`}],'');
+    formString += generateSelectCh2(`_587`,"Party Members can ACT",data[`_587`],[{value:1,text:`[1]No`},{value:0,text:`[0]Yes`}],'');
     formString += generateNumberInput(`_862`,"Spamton Progress",data[`_862`],{min:0,max:9},'flag');
     formString += generateNumberInput(`_1468`,"SnowGrave Progress",data[`_1468`],{min:0,max:9},'flag');
     formString += generateNumberInput(`_1478`,"Monsters Frozen",data[`_1478`],{min:0,max:45},'flag');
     formString += generateNumberInput(`_1015`,"Cars Killed",data[`_1015`],{min:0,max:99999},'flag');
     formString += generateNumberInput(`_1471`,"Chapter 2 Eggs",data[`_1471`],{min:-99999,max:99999},'flag');
-    formString += generateSelectCh2(`_1010`,"Berdly's Arm",data[`_1010`],[{value:1,text:`Healthy`},{value:0,text:`Not doing too great`}],'flag');
-    formString += generateSelectCh2(`_1473`,"Kris ate Moss",data[`_1473`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-    formString += generateSelectCh2(`_1475`,"Susie ate Moss",data[`_1475`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-    formString += generateSelectCh2(`_1474`,"Noelle saw Moss get eaten",data[`_1474`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-    formString += generateSelectCh2(`_878`,"Ralsei's Photo",data[`_878`],[{value:0,text:`None`},{value:1,text:`Hug Prince`},{value:2,text:`Pose Prince`},{value:3,text:`Rude Prince`},{value:4,text:`Blank Prince`}],'');
-    formString += generateSelectCh1(`_910`,"Recruited Hacker",data[`_910`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
+    formString += generateSelectCh2(`_1010`,"Berdly's Arm",data[`_1010`],[{value:1,text:`[1]Healthy`},{value:0,text:`[0]Not doing too great`}],'flag');
+    formString += generateSelectCh2(`_1473`,"Kris ate Moss",data[`_1473`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+    formString += generateSelectCh2(`_1475`,"Susie ate Moss",data[`_1475`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+    formString += generateSelectCh2(`_1474`,"Noelle saw Moss get eaten",data[`_1474`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+    formString += generateSelectCh2(`_878`,"Ralsei's Photo",data[`_878`],[{value:0,text:`[0]None`},{value:1,text:`[1]Hug Prince`},{value:2,text:`[2]Pose Prince`},{value:3,text:`[3]Rude Prince`},{value:4,text:`[4]Blank Prince`}],'');
+    formString += generateSelectCh1(`_910`,"Recruited Hacker",data[`_910`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
     formString += "</div>";
     
 

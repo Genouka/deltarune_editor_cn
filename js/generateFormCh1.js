@@ -376,8 +376,8 @@
         formString += generateSelectCh1(`_1223`,"你感觉你的造物怎么样？(它听不见。)<br>",data[`_1223`],goner_feel);
 
 
-        formString += generateSelectCh1(`_1224`,"你回答诚实吗？<br>",data[`_1224`],[{value:0,text:`YES`},{value:1,text:`NO`}]);
-        formString += generateSelectCh1(`_1225`,"您知道会有疼痛和癫痫发作的可能性。<br>",data[`_1225`],[{value:0,text:`YES`},{value:1,text:`NO`}]);
+        formString += generateSelectCh1(`_1224`,"你回答诚实吗？<br>",data[`_1224`],[{value:0,text:`[0]YES`},{value:1,text:`[1]NO`}]);
+        formString += generateSelectCh1(`_1225`,"您知道会有疼痛和癫痫发作的可能性。<br>",data[`_1225`],[{value:0,text:`[0]YES`},{value:1,text:`[1]NO`}]);
 
         formString += `</div>`;
         formString += `</div>`;
@@ -392,22 +392,22 @@
         //chapter 1 hometown flags
         formString += "<div id='flags_box'>";
         formString += "与角色对话过<br>";
-        formString += generateSelectCh1(`_573`,"Talked to Berdly",data[`_573`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-        formString += generateSelectCh1(`_582`,"Talked to Catty",data[`_582`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-        formString += generateSelectCh1(`_587`,"Talked to Undyne",data[`_587`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-        formString += generateSelectCh1(`_588`,"Talked to Burgerpants",data[`_588`],[{value:0,text:`No`},{value:1,text:`Yes`},{value:2,text:`Seen dialogue`}],'');
-        formString += generateSelectCh1(`_590`,"Talked to Sans",data[`_590`],[{value:0,text:`No`},{value:1,text:`Yes`},{value:2,text:`Talked about his brother`}],'');
-        formString += generateSelectCh1(`_592`,"Rudy's Hospital Sink（Rudy在医院的堕落）",data[`_592`],[{value:0,text:`Not interacted`},{value:1,text:`Interacted`}],'');
-        formString += generateSelectCh1(`_593`,"Talked to Noelle",data[`_593`],[{value:0,text:`No`},{value:1,text:`Yes`},{value:2,text:`Talked about Susie`}],'');
+        formString += generateSelectCh1(`_573`,"Talked to Berdly",data[`_573`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+        formString += generateSelectCh1(`_582`,"Talked to Catty",data[`_582`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+        formString += generateSelectCh1(`_587`,"Talked to Undyne",data[`_587`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+        formString += generateSelectCh1(`_588`,"Talked to Burgerpants",data[`_588`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`},{value:2,text:`[2]Seen dialogue`}],'');
+        formString += generateSelectCh1(`_590`,"Talked to Sans",data[`_590`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`},{value:2,text:`[2]Talked about his brother`}],'');
+        formString += generateSelectCh1(`_592`,"Rudy's Hospital Sink（Rudy在医院的堕落）",data[`_592`],[{value:0,text:`[0]Not interacted`},{value:1,text:`[1]Interacted`}],'');
+        formString += generateSelectCh1(`_593`,"Talked to Noelle",data[`_593`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`},{value:2,text:`[2]Talked about Susie`}],'');
         formString += "</div>";
         
         
         
         formString += "<div id='flags_box'>";
         formString += "过场动画<br>";
-        formString += generateSelectCh1(`_572`,"Noelle 在医院的过场动画",data[`_572`],[{value:0,text:`Haven't seen`},{value:1,text:`Watched Cutscene`},{value:2,text:`Talked to Rudy`}],'');
-        formString += generateSelectCh1(`_579`,"Asgore flower cutscene",data[`_579`],[{value:0,text:`Haven't seen`},{value:1,text:`Entered Flower Shop`},{value:2,text:`Recieved Bouquet`},{value:3,text:`Given Bouquet to Toriel`},{value:4,text:`Toriel threw Bouquet away`}],'');
-        formString += generateSelectCh1(`_586`,"Alphys Alleyway Cutscene",data[`_586`],[{value:0,text:`Haven't seen`},{value:1,text:`Watched Cutscene`}],'');
+        formString += generateSelectCh1(`_572`,"Noelle 在医院的过场动画",data[`_572`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Watched Cutscene`},{value:2,text:`[2]Talked to Rudy`}],'');
+        formString += generateSelectCh1(`_579`,"Asgore flower cutscene",data[`_579`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Entered Flower Shop`},{value:2,text:`[2]Recieved Bouquet`},{value:3,text:`[3]Given Bouquet to Toriel`},{value:4,text:`[4]Toriel threw Bouquet away`}],'');
+        formString += generateSelectCh1(`_586`,"Alphys Alleyway Cutscene",data[`_586`],[{value:0,text:`[0]Haven't seen`},{value:1,text:`[1]Watched Cutscene`}],'');
 
         formString += "</div>";
         
@@ -415,19 +415,19 @@
         
         formString += "<div id='flags_box'>";
         formString += "Onion<br>";
-        formString += generateSelectCh1(`_575`,"与 Onion 说过话",data[`_575`],[{value:0,text:`No`},{value:1,text:`Yes`},{value:2,text:`Became Friend`},{value:3,text:`Refused Friendship`}],'');
-        formString += generateSelectCh1(`_576`,"Your Name",data[`_576`],[{value:0,text:`None`},{value:1,text:`Kris`},{value:2,text:`Hippopotamus`}],'grey_disable');
-        formString += generateSelectCh1(`_577`,"Onion's Name",data[`_577`],[{value:0,text:`None`},{value:1,text:`Onion`},{value:2,text:`Beauty`},{value:3,text:`Asriel II`},{value:4,text:`Disgusting`}],'grey_disable');
+        formString += generateSelectCh1(`_575`,"与 Onion 说过话",data[`_575`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`},{value:2,text:`[2]Became Friend`},{value:3,text:`[3]Refused Friendship`}],'');
+        formString += generateSelectCh1(`_576`,"Your Name",data[`_576`],[{value:0,text:`[0]None`},{value:1,text:`[1]Kris`},{value:2,text:`[2]Hippopotamus`}],'grey_disable');
+        formString += generateSelectCh1(`_577`,"Onion's Name",data[`_577`],[{value:0,text:`[0]None`},{value:1,text:`[1]Onion`},{value:2,text:`[2]Beauty`},{value:3,text:`[3]Asriel II`},{value:4,text:`[4]Disgusting`}],'grey_disable');
         formString += "</div>";
         
         
         
         formString += "<div id='flags_box'>";
         formString += "Other<br>";
-        formString += generateSelectCh1(`_574`,"Stuck fingers in Picnic Table",data[`_574`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-        formString += generateSelectCh1(`_578`,"Free Hot Chocolate",data[`_578`],[{value:0,text:`Unclaimed`},{value:1,text:`Claimed`}],'');
-        formString += generateSelectCh1(`_589`,"Phonecall with Toriel",data[`_589`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-        formString += generateSelectCh1(`_591`,"Got Sans's Phone number",data[`_591`],[{value:0,text:`No`},{value:1,text:`Yes`},{value:1,text:`Called it`}],'');
+        formString += generateSelectCh1(`_574`,"Stuck fingers in Picnic Table",data[`_574`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+        formString += generateSelectCh1(`_578`,"Free Hot Chocolate",data[`_578`],[{value:0,text:`[0]Unclaimed`},{value:1,text:`[1]Claimed`}],'');
+        formString += generateSelectCh1(`_589`,"Phonecall with Toriel",data[`_589`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+        formString += generateSelectCh1(`_591`,"Got Sans's Phone number",data[`_591`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`},{value:1,text:`[1]Called it`}],'');
         formString += generateNumberInput(`_594`,"Times entered house",data[`_594`],{min:0,max:8},'flag');
 
 
@@ -447,13 +447,13 @@
 
         formString += "<div class='flags_box'>";
         formString += "Other Flags<br>";
-        formString += generateSelectCh1(`_423`,"Eaten Prison Moss",data[`_423`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
+        formString += generateSelectCh1(`_423`,"Eaten Prison Moss",data[`_423`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
         formString += generateNumberInput(`_558`,"Jevil Quest (?)",data[`_558`],{min:0,max:7},'flag');
-        formString += generateSelectCh1(`_571`,"The Original Starwalker",data[`_571`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
+        formString += generateSelectCh1(`_571`,"The Original Starwalker",data[`_571`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
         formString += generateNumberInput(`_1228`,"Chapter 1 Eggs",data[`_1228`],{min:-99999,max:99999},'flag');
-        formString += generateSelectCh1(`_569`,"Kris Inspected the Beds",data[`_569`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-        formString += generateSelectCh1(`_570`,"Spin Cake Received",data[`_570`],[{value:0,text:`No`},{value:1,text:`Yes`}],'');
-        formString += generateSelectCh1(`_524`,"Thrown Away Manual",data[`_524`],[{value:0,text:`No`},{value:1,text:`Dropped once`},{value:2,text:`Thrown Away`}],'');
+        formString += generateSelectCh1(`_569`,"Kris Inspected the Beds",data[`_569`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+        formString += generateSelectCh1(`_570`,"Spin Cake Received",data[`_570`],[{value:0,text:`[0]No`},{value:1,text:`[1]Yes`}],'');
+        formString += generateSelectCh1(`_524`,"Thrown Away Manual",data[`_524`],[{value:0,text:`[0]No`},{value:1,text:`[1]Dropped once`},{value:2,text:`[2]Thrown Away`}],'');
         formString += "</div>";
 
 
