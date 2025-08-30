@@ -1,367 +1,148 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deltarune 存档修改器 @GenOuka</title>
+  <meta charset="UTF-8" />
+  <title>Deltarune 存档修改器</title>
   <style>
+    /* 重置 */
     * {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
+      box-sizing: border-box
     }
-    
+
     body {
-      background: linear-gradient(135deg, #0c0c1d, #1a1a2e);
-      color: #e0e0ff;
-      font-family: 'Noto Sans SC', sans-serif;
-      min-height: 100vh;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      color: #111;
+      background: #fff;
+      line-height: 1.5;
     }
-    
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 10% 20%, rgba(92, 107, 192, 0.15) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(138, 78, 159, 0.15) 0%, transparent 20%);
-      z-index: -1;
+
+    a {
+      color: #0066cc;
+      text-decoration: none
     }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
+
+    a:hover {
+      text-decoration: underline
     }
-    
-    header {
-      text-align: center;
-      padding: 30px 0;
-      margin-bottom: 40px;
-      position: relative;
-    }
-    
-    h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 700;
-      color: #ffffff;
-      text-shadow: 0 0 10px rgba(92, 107, 192, 0.7), 
-                   0 0 20px rgba(138, 78, 159, 0.5);
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-      position: relative;
-      display: inline-block;
-    }
-    
-    .version {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.5rem;
-      color: #8a4e9f;
-      position: absolute;
-      top: -10px;
-      right: -60px;
-      transform: rotate(15deg);
-      text-shadow: 0 0 5px rgba(138, 78, 159, 0.7);
-    }
-    
-    .subtitle {
-      font-size: 1.2rem;
-      color: #a7a9ff;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-    
-    .editor-container {
+
+    /* 布局 */
+    .wrapper {
       display: flex;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
-      margin: 60px 0;
+      min-height: 100vh;
     }
-    
-    .editor-card {
-      background: rgba(20, 22, 40, 0.8);
-      border: 1px solid rgba(92, 107, 192, 0.3);
-      border-radius: 15px;
-      padding: 30px;
-      width: 350px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(5px);
+
+    .sidebar {
+      width: 320px;
+      border-right: 1px solid #bbb;
+      padding: 24px;
+      background: #fafafa;
     }
-    
-    .editor-card::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: linear-gradient(45deg, #5c6bc0, #8a4e9f, #5c6bc0);
-      z-index: -1;
-      border-radius: 16px;
+
+    .main {
+      flex: 1;
+      padding: 32px;
     }
-    
-    .editor-card h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.8rem;
-      margin-bottom: 25px;
-      color: #ffffff;
-      text-shadow: 0 0 5px rgba(138, 78, 159, 0.5);
+
+    /* 元素 */
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 8px
     }
-    
-    .editor-card p {
-      font-size: 1rem;
-      color: #b8b9e1;
-      margin-bottom: 25px;
-      line-height: 1.6;
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 20px 0 8px
     }
-    
+
+    p,
+    li {
+      font-size: 14px;
+      margin-bottom: 8px
+    }
+
+    ul {
+      margin-left: 18px
+    }
+
     .btn {
       display: inline-block;
-      padding: 14px 35px;
-      background: linear-gradient(45deg, #5c6bc0, #7e57c2);
-      color: white;
-      text-decoration: none;
-      border-radius: 50px;
-      font-weight: 500;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(92, 107, 192, 0.4);
-      position: relative;
-      overflow: hidden;
-      border: none;
-      cursor: pointer;
-      font-family: 'Orbitron', sans-serif;
+      padding: 6px 14px;
+      border: 1px solid #666;
+      background: #fff;
+      color: #111;
+      font-size: 14px;
+      margin: 4px 0;
     }
-    
+
     .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(92, 107, 192, 0.6);
-      background: linear-gradient(45deg, #6d7bd0, #8f67d2);
+      background: #f2f2f2;
+      text-decoration: none
     }
-    
-    .btn::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: 0.5s;
-    }
-    
-    .btn:hover::after {
-      left: 100%;
-    }
-    
-    .demo-badge {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: linear-gradient(45deg, #ff5722, #ff9800);
-      color: white;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      transform: rotate(5deg);
-      box-shadow: 0 3px 10px rgba(255, 87, 34, 0.3);
-    }
-    
-    .features {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin: 60px 0;
-      flex-wrap: wrap;
-    }
-    
-    .feature {
-      background: rgba(25, 28, 50, 0.6);
-      border: 1px solid rgba(92, 107, 192, 0.2);
-      border-radius: 10px;
-      padding: 25px;
-      width: 250px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-    
-    .feature:hover {
-      background: rgba(35, 38, 65, 0.8);
-      transform: translateY(-5px);
-      border-color: rgba(138, 78, 159, 0.4);
-    }
-    
-    .feature i {
-      font-size: 2.5rem;
-      color: #8a4e9f;
-      margin-bottom: 15px;
-    }
-    
-    .feature h3 {
-      font-size: 1.3rem;
-      margin-bottom: 12px;
-      color: #ffffff;
-    }
-    
-    .feature p {
-      font-size: 0.95rem;
-      color: #b8b9e1;
-    }
-    
-    .credits {
-      background: rgba(15, 17, 35, 0.8);
-      border-top: 1px solid rgba(92, 107, 192, 0.3);
-      border-bottom: 1px solid rgba(92, 107, 192, 0.3);
-      padding: 40px 20px;
-      margin: 60px 0;
-      text-align: center;
-      border-radius: 10px;
-    }
-    
-    .credits h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.8rem;
-      color: #8a4e9f;
-      margin-bottom: 30px;
-      text-shadow: 0 0 5px rgba(138, 78, 159, 0.3);
-    }
-    
-    .credit-item {
-      margin-bottom: 25px;
-    }
-    
-    .credit-item h3 {
-      font-size: 1.4rem;
-      color: #a7a9ff;
-      margin-bottom: 10px;
-    }
-    
-    .credit-item p {
-      font-size: 1.1rem;
-      color: #b8b9e1;
-      max-width: 800px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-    
-    .bilibili-link {
-      color: #fb7299;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-    
-    .bilibili-link:hover {
-      color: #ff9eb5;
-      text-decoration: underline;
-    }
-    
+
+    /* 底部版权 */
     footer {
-      text-align: center;
-      padding: 30px 0;
-      color: #7d80b0;
-      font-size: 0.9rem;
+      margin-top: 60px;
+      font-size: 12px;
+      color: #666;
     }
-    
-    .game-icon {
-      position: absolute;
-      opacity: 0.1;
-      z-index: -1;
-    }
-    
-    .icon-1 {
-      top: 10%;
-      left: 5%;
-      font-size: 8rem;
-      color: #5c6bc0;
-    }
-    
-    .icon-2 {
-      bottom: 15%;
-      right: 8%;
-      font-size: 10rem;
-      color: #8a4e9f;
-      transform: rotate(15deg);
-    }
-    
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2.5rem;
+
+    /* 自适应 */
+    @media(max-width:768px) {
+      .wrapper {
+        flex-direction: column
       }
-      
-      .version {
-        top: -5px;
-        right: -45px;
-        font-size: 1.2rem;
-      }
-      
-      .editor-container {
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .editor-card {
+
+      .sidebar {
         width: 100%;
-        max-width: 400px;
-      }
-      
-      .features {
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .icon-1, .icon-2 {
-        display: none;
+        border-right: none;
+        border-bottom: 1px solid #bbb
       }
     }
   </style>
+  <script>
+    function downloadAndroid() {
+      alert('原来的123网盘链接被和谐了，现改用buzzheavier网盘。\n'
+        + '第一次点下载按钮会有广告，返回再点一下下载按钮的才是真的。\n'
+        + '这个网盘的策略：文件生命周期为8天。每次下载增加2天（最多60天）。每60天下载30次以上，文件将成为永久文件。\n'
+        + '如果想让后人能下到请定期点点下载谢谢');
+      window.open('https://buzzheavier.com/sf74zdx0j62d');
+    }
+
+  </script>
 </head>
+
 <body>
-  <div class="container">
-    <header>
-      <h1>Deltarune 1-4章存档修改器 中文版</span></h1>
-      <p>2025.8.2更新（如果显示不了最新页面请强制刷新Ctrl+F5）</p>
-    </header>
-    
-    <div class="editor-container">
-      <div class="editor-card">
-        <p>目前已完成Android版本和Windows版本，Linux版本和Mac版本正在制作中~</p>
-        <a href="https://www.123684.com/s/WxHjVv-VDt0A?pwd=drdr" class="btn">
-          Android版本(游戏内置)(提取码:drdr)
-        </a><br>
-        <a href="https://www.123684.com/s/WxHjVv-rjt0A?pwd=drdr" class="btn">
-          Windows版本(独立程序)(提取码:drdr)
-        </a><br>
-        <a href="javascript:window.open('https://space.bilibili.com/3493116076100126')" class="btn">
-          作者首页（秋冥散雨_GenOuka）
-        </a>
-      </div>
-    </div>
-    <footer>
-      <p>Copyright (c) 2025 秋冥散雨_Genouka</p>
-    </footer>
-  </div>
-  
-  <div class="game-icon icon-1">
-    <i class="fas fa-gamepad"></i>
-  </div>
-  
-  <div class="game-icon icon-2">
-    <i class="fas fa-dragon"></i>
+  <div class="wrapper">
+    <!-- 左侧栏 -->
+    <aside class="sidebar">
+      <h1>Deltarune 存档修改器</h1>
+      <p>更新日期：2025-08-30</p>
+      <p>作者：<a href="https://space.bilibili.com/3493116076100126" target="_blank">@秋冥散雨_GenOuka</a></p>
+      <p>版本说明：</p>
+      <ul>
+        <li>Android（游戏内置）：已完成</li>
+        <li>Windows（独立程序）：已完成</li>
+        <li>MacOS（独立程序）：已完成</li>
+        <li>Linux（独立程序）：制作中</li>
+      </ul>
+    </aside>
+
+    <!-- 右侧主体 -->
+    <main class="main">
+      <h2>下载</h2>
+      <a class="btn" href="javascript:downloadAndroid()">Android 版本</a><br>
+      <a class="btn" href="https://www.123684.com/s/WxHjVv-rjt0A?pwd=drdr">Windows 版本 (提取码：drdr)</a><br>
+      <a class="btn" href="https://www.123684.com/s/WxHjVv-rjt0A?pwd=drdr">MacOS 版本 (提取码：drdr)</a>
+      <footer>
+        Copyright © 2025 秋冥散雨_GenOuka
+      </footer>
+    </main>
   </div>
 </body>
+
 </html>

@@ -28,6 +28,9 @@
 <script src="../../js/goner-1.js?nocache=101"></script>
 <script src="../../js/eruda.js"></script>
 <script>
+    Cwindow=window;
+(async function () {
+
 window.debugclick=0;
 $(".ahc").on('click',function(){
     window.debugclick=window.debugclick+1;
@@ -48,13 +51,48 @@ function convertStringToObject(str) {
     }
     return result;
 }
-var saveData = convertStringToObject(Android.readFile11());
+    function readSaveSafe() {
+      function sync2async(func) {
+        return new Promise((resolve, reject) => {
+          try {
+            const result = func();
+            resolve(result);
+          } catch (error) {
+            reject(error);
+          }
+        });
+      }
+      if (window.Android) {
+        return sync2async(() => window.Android.readFile11());
+      }
+      else if (window.__TAURI_INTERNALS__){
+        (function () {
+          window.Android = {
+            readFile11: () => window.__TAURI__.core.invoke('read_file_11', { href: location.href }),
+            writeSyncT: (text) => window.__TAURI__.core.invoke('write_sync_t', { href: location.href, text }),
+            closeDialogT: () => {
+              const base = 'https://dreditorcn.genouka.top';
+              const platform = window.Android.getPlatform();
+              const ok = `${base}/win/success.html?reason=closeDialogT`;
+              location.href = ok;
+            },
+            getPlatform: () => window.__TAURI__.core.invoke('get_platform'),
+            getSaveDirectory: () => window.__TAURI__.core.invoke('get_save_directory')
+          };
+        })();
+        return Android.readFile11();
+      }else{
+        alert("错误，未运行在合法环境，目前支持Tauri版本和Android版本");
+        return sync2async(() => { throw new Error("错误，未运行在合法环境，目前支持Tauri版本和Android版本"); });
+      }
+    }
+    Cwindow.saveData = convertStringToObject(await readSaveSafe());
 //@bilibili:genouka
-var _col1 = colorToRGB(saveData[`_776`]);
-var _col2 = colorToRGB(saveData[`_777`]);
-var _col3 = colorToRGB(saveData[`_778`]);
+Cwindow._col1 = colorToRGB(saveData[`_776`]);
+Cwindow._col2 = colorToRGB(saveData[`_777`]);
+Cwindow._col3 = colorToRGB(saveData[`_778`]);
 
-var allow_broken_party = false;
+Cwindow.allow_broken_party = false;
 
 
 $(function(){
@@ -100,7 +138,7 @@ $(function(){
 
 
   $("body").on('change','select',function(){
-    var enabled = true;
+    Cwindow.enabled = true;
     if($(this).val() == 0 && $(this).parent().attr('class').indexOf('grey_disable') != -1){
       enabled = false;
     }
@@ -116,7 +154,7 @@ $(function(){
 
 
     //This is the party logic
-    var _name = $(this).attr('name');
+    Cwindow._name = $(this).attr('name');
     if(_name == "_8" || _name == "_9" || _name == "_10"){
       //slot1
 
@@ -141,15 +179,15 @@ $(function(){
 
 
   function updateDownloadChapter(){
-    var save_type = $(`select[name='public_save_type']`).val();
+    Cwindow.save_type = $(`select[name='public_save_type']`).val();
 
-    var public_href = '../../dl/1750859248806/685bfdf017c67992e64e8ed3/filech3_0';
-    var public_text = "Public Save File Link";
+    Cwindow.public_href = '../../dl/1750859248806/685bfdf017c67992e64e8ed3/filech3_0';
+    Cwindow.public_text = "Public Save File Link";
 
     if(save_type == 1){
 
-      var oldFile = "filech3_0";
-      var convertName = oldFile;
+      Cwindow.oldFile = "filech3_0";
+      Cwindow.convertName = oldFile;
       if(convertName.indexOf('filech2') != -1){
         convertName = convertName.replace('filech2','filech1');
       }else{
@@ -168,7 +206,7 @@ $(function(){
   $("body").on('change','input',function(){
 
 
-    var _name = $(this).attr('name');
+    Cwindow._name = $(this).attr('name');
 
     updateStatus();
 
@@ -177,7 +215,7 @@ $(function(){
     }
 
 
-    var enabled = true;
+    Cwindow.enabled = true;
 
     if($(this).attr('type') == "checkbox"){
       if(!this.checked){
@@ -259,9 +297,9 @@ $(function(){
         val3 = parseInt(val3);
 
 
-    var val1_arr = [1];
-    var val2_arr = [0];
-    var val3_arr = [0];
+    Cwindow.val1_arr = [1];
+    Cwindow.val2_arr = [0];
+    Cwindow.val3_arr = [0];
 
 
 
@@ -279,14 +317,14 @@ $(function(){
           val2_arr.push(0);
         }
 
-        for(var i = 2; i < 5; i++){
+        for(Cwindow.i = 2; i < 5; i++){
           if(i != val3){
             val2_arr.push(i);
           }
         }
 
         val3_arr.push(0);
-        for(var i = 2; i < 5; i++){
+        for(Cwindow.i = 2; i < 5; i++){
           if(i != val2){
             val3_arr.push(i);
           }
@@ -298,12 +336,12 @@ $(function(){
       }
 
     }
-    var final_arr = [val1_arr,val2_arr,val3_arr];
-    for(var j = 0; j < 3; j++){
+    Cwindow.final_arr = [val1_arr,val2_arr,val3_arr];
+    for(Cwindow.j = 0; j < 3; j++){
 
         $(`select[name="_${j+8}"]`).find('option').each(function(){
-          var allowed = false;
-          for(var i = 0; i < final_arr[j].length; i++){
+          Cwindow.allowed = false;
+          for(Cwindow.i = 0; i < final_arr[j].length; i++){
             if(`${final_arr[j][i]}` === $(this).val()){
               allowed = true;
             }
@@ -323,7 +361,7 @@ $(function(){
     $("#party_display").html(`${getPartyImage(val1)} ${getPartyImage(val2)} ${getPartyImage(val3)}`);
 
     function getPartyImage(val){
-      var str = "<span style='vertical-align:bottom;width:40px;height:40px;display:inline-block;'></span>";
+      Cwindow.str = "<span style='vertical-align:bottom;width:40px;height:40px;display:inline-block;'></span>";
       switch(val){
         case 1:
           str = "<img src='../../images/Kris.png'>";
@@ -347,8 +385,8 @@ $(function(){
 
 
   $("body").on('click','.spells_title',function(){
-    var display = 'flex';
-    var text = `<center>▲ 技能 ▲</center>`;
+    Cwindow.display = 'flex';
+    Cwindow.text = `<center>▲ 技能 ▲</center>`;
     if($(this).parent().find(".spell_wrapper").css("display") == 'flex'){
       display = 'none';
 
@@ -401,9 +439,9 @@ $(function(){
 
 
   function updateThrasher(){
-    var _col1 = colorToRGB($(`input[name='_776']`).val());
-    var _col2 = colorToRGB($(`input[name='_777']`).val());
-    var _col3 = colorToRGB($(`input[name='_778']`).val());
+    Cwindow._col1 = colorToRGB($(`input[name='_776']`).val());
+    Cwindow._col2 = colorToRGB($(`input[name='_777']`).val());
+    Cwindow._col3 = colorToRGB($(`input[name='_778']`).val());
     GenerateThrasher($(`select[name='_773']`).val(),$(`select[name='_774']`).val(),$(`select[name='_775']`).val(),_col1,_col2,_col3);
 
     $("#thrash_head_c").css({"background-color":`rgb(${_col1[0]},${_col1[1]},${_col1[2]})`});
@@ -421,18 +459,18 @@ $(function(){
 
 
   function updateStatus(){
-    var lv_kris = "2";
-    var lv_susie = "2";
-    var lv_ralsei = "2";
-    var lv_noelle = "1";
-    var status_kris = "Leader";
-    var status_susie = "Dark Knight";
-    var status_ralsei = "Dark Prince";
-    var status_noelle = "Snowcaster";
-    var desc_kris = "Commands the party<br>with various ACTs.";
-    var desc_susie = "Does damage using<br>dark energy";
-    var desc_ralsei = "Dark-World being.<br>Has friends now.";
-    var desc_noelle = "Might be able to<br>use some cool moves.";
+    Cwindow.lv_kris = "2";
+    Cwindow.lv_susie = "2";
+    Cwindow.lv_ralsei = "2";
+    Cwindow.lv_noelle = "1";
+    Cwindow.status_kris = "Leader";
+    Cwindow.status_susie = "Dark Knight";
+    Cwindow.status_ralsei = "Dark Prince";
+    Cwindow.status_noelle = "Snowcaster";
+    Cwindow.desc_kris = "Commands the party<br>with various ACTs.";
+    Cwindow.desc_susie = "Does damage using<br>dark energy";
+    Cwindow.desc_ralsei = "Dark-World being.<br>Has friends now.";
+    Cwindow.desc_noelle = "Might be able to<br>use some cool moves.";
 
 
     if(Int($(`input[name='_3053']`).val()) >= 60){
@@ -519,13 +557,13 @@ $(function(){
 updateGoner(1453,1454,1455);
 switchTab("tab_main");function mergeObjects() {
 
-var result = {};
+Cwindow.result = {};
 
 // 遍历所有传入的对象
 
-for (var i = 0; i < arguments.length; i++) {
+for (Cwindow.i = 0; i < arguments.length; i++) {
 
-var obj = arguments[i];
+Cwindow.obj = arguments[i];
 
 // 遍历当前对象的所有属性
 
@@ -566,7 +604,7 @@ function objectToMultilineString(obj, totalLines) {
 
   SetValidParty($(`select[name="_8"]`).val(),$(`select[name="_9"]`).val(),$(`select[name="_10"]`).val());
   $(".submitButton").on('click',function(){
-    var formdata = parseFormData();
+    Cwindow.formdata = parseFormData();
       Android.writeSyncT(objectToMultilineString(mergeObjects(saveData,formdata),3055));Android.closeDialogT();
      
 
@@ -589,11 +627,11 @@ function objectToMultilineString(obj, totalLines) {
 
       $("input").each(function(){
         if($(this).attr('noinput') != "true"){
-          var inputData = "0";
+          Cwindow.inputData = "0";
           if($(this).attr("type") == "checkbox"){
 
-            var _off = "0";
-            var _on = "1";
+            Cwindow._off = "0";
+            Cwindow._on = "1";
 
             if($(this).attr("off")){
               _off = $(this).attr("off");
@@ -623,12 +661,14 @@ function objectToMultilineString(obj, totalLines) {
 
 
 
+
+})();
 </script>
 
 
 </head>
 <body>
-<center><h1>补丁内置存档修改器v4.1.1</h1></center>
+<center><h1>Deltarune存档修改器v5.0</h1></center>
 <center>在修改前请备份你的存档。<br>由于正在开发当中，本版本可能会损坏你的存档。</center><br><br><br>
 <div id='page_tabs'></div>
 

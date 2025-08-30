@@ -1,11 +1,4 @@
 
-
-  @font-face {
-    font-family: DeterminationMonoWebRegular;
-    src: url('../../fonts/determination-mono-web-font/DeterminationMonoWebRegular-Z5oq.ttf');
-  }
-
-
   *, *::before, *::after { box-sizing: border-box; }
 
 body{
@@ -18,7 +11,7 @@ body{
   padding:12px 0 0 12px;
   margin:0;
   vertical-align: top;
-  font-family: DeterminationMonoWebRegular;
+  
   min-width:500px;
 }
 
@@ -503,7 +496,7 @@ select, input{
   padding:6px;
   font-size:1em;
 
-  font-family: DeterminationMonoWebRegular;
+  
 }
 
 
@@ -556,4 +549,195 @@ a, a:visited, a:hover, a:active{
         display: block;
         opacity: 1;
     }
+}
+/* Copyright by Genouka 2025*/
+/*  =====  设计令牌  =====  */
+:root{
+    --bg:           #0a0a0a;
+    --surface:      #1a1a1a;
+    --line:         #444;
+    --text:         #e5e5e5;
+    --text-dim:     #888;
+    --accent:       #00e676;
+    --accent-hover: #00c853;
+    --gap:          8px;
+    --control-h:    32px;
+    --mono:         ui-monospace, "Cascadia Code", "Source Code Pro", monospace;
+}
+
+/*  =====  通用重置  =====  */
+* , *::before , *::after{ box-sizing:border-box; }
+body{
+    margin:0;
+    padding:var(--gap);
+    background:var(--bg);
+    color:var(--text);
+    font:13px/1.4 var(--mono);
+    min-width:500px;
+}
+
+/*  =====  栅格 & 容器  =====  */
+#page_tabs{
+    display:flex;
+    gap:var(--gap);
+    flex-wrap:wrap;
+}
+#main_box,
+#goner_box,
+#thrash_box,
+#lightworld_box,
+#party_box,
+#flags_box,
+.character_box,
+#recruit_box,
+#recruit_cafe_box,
+.item_box{
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:var(--gap);
+    margin:var(--gap);
+    display:inline-block;
+    vertical-align:top;
+}
+
+/*  =====  选项卡  =====  */
+.tab_click{
+    height:var(--control-h);
+    padding:0 20px;
+    border:1px solid var(--line);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    transition:.15s;
+}
+.tab_selected{
+    border-bottom:2px solid var(--accent);
+    color:var(--accent);
+}
+
+/*  =====  按钮  =====  */
+.submitButton{
+    height:var(--control-h);
+    padding:0 20px;
+    border:1px solid var(--line);
+    color:var(--accent);
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    transition:.15s;
+}
+.submitButton:hover,
+.tab_click:hover{
+    border-color:var(--accent-hover);
+    color:var(--accent-hover);
+}
+
+/*  =====  表单控件  =====  */
+input, select, button{
+    height:var(--control-h);
+    padding:0 8px;
+    background:var(--surface);
+    color:var(--text);
+    border:1px solid var(--line);
+    font:inherit;
+    transition:border-color .15s;
+}
+input[type=number]{ width:80px; }
+input:focus, select:focus{
+    outline:none;
+    border-color:var(--accent);
+}
+
+/*  =====  滑块  =====  */
+.slider{
+    -webkit-appearance:none;
+    width:100%;
+    height:4px;
+    background:var(--line);
+    margin:14px 0;
+}
+.slider::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:12px;
+    height:12px;
+    background:var(--accent);
+    cursor:pointer;
+}
+.slider::-moz-range-thumb{
+    width:12px;
+    height:12px;
+    background:var(--accent);
+    cursor:pointer;
+    border:none;
+}
+
+/*  =====  隐藏/显示  =====  */
+.hidden,
+.broken_party,
+.unused_room,
+.unused_recruit,
+.unused_recruit_cafe{
+    display:none !important;
+}
+
+/*  =====  链接  =====  */
+a, a:visited, a:hover, a:active{
+    color:var(--accent);
+    text-decoration:none;
+}
+a:hover{ color:var(--accent-hover); }
+
+/*  =====  动画（保留淡入） =====  */
+@keyframes fadeInFromNone{
+    0%   { opacity:0; }
+    100% { opacity:1; }
+}
+/* ===== 移动端补丁 ===== */
+
+/* 1. 让页面真正自适应 */
+html,body{min-width:0;}
+
+/* 2. 竖屏<600px时生效 */
+@media (max-width:600px){
+    /* 2-1 选项卡：单行横向滚动，避免折行挤压 */
+    #page_tabs{
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+        gap:4px;
+    }
+    .tab_click{
+        flex:0 0 auto;
+        font-size:14px;
+        padding:0 12px;
+    }
+
+    /* 2-2 所有卡片占满整行，去掉内边距挤压 */
+    #main_box,
+    #goner_box,
+    #thrash_box,
+    #lightworld_box,
+    #party_box,
+    #flags_box,
+    .character_box,
+    #recruit_box,
+    #recruit_cafe_box,
+    .item_box{
+        display:block;
+        width:100%;
+        margin:var(--gap) 0;
+        box-sizing:border-box;
+    }
+
+    /* 2-3 输入控件放大触控面积 */
+    input,select,button,.submitButton,.tab_click{
+        min-height:44px;               /* iOS 推荐最小 44×44 */
+    }
+    input[type=number]{
+        width:100%;
+        max-width:120px;
+    }
+
+    /* 2-4 滑块左右留空，避免贴边 */
+    .slider{margin:14px 8px;}
 }
