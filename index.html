@@ -105,16 +105,6 @@
       }
     }
   </style>
-  <script>
-    function downloadAndroid() {
-      alert('原来的123网盘链接被和谐了，现改用buzzheavier网盘。\n'
-        + '第一次点下载按钮会有广告，返回再点一下下载按钮的才是真的。\n'
-        + '这个网盘的策略：文件生命周期为8天。每次下载增加2天（最多60天）。每60天下载30次以上，文件将成为永久文件。\n'
-        + '如果想让后人能下到请定期点点下载谢谢');
-      window.open('https://buzzheavier.com/sf74zdx0j62d');
-    }
-
-  </script>
   <script defer src="https://status.genouka.top/script.js" data-website-id="5f7bc751-d2a6-4eaf-a521-37d6c6e4a45c"></script>
 </head>
 
@@ -129,29 +119,34 @@
       <p>* 中文翻译本地化</p>
       <p>* 开源免费</p>
       <p></p>
-      <p>更新日期：2025-11-12</p>
+      <p>最后更新日期：2025-11-12</p>
       <p>作者：<a href="https://space.bilibili.com/3493116076100126" target="_blank">哔哩哔哩：@秋冥散雨_GenOuka</a></p>
-      <p>版本说明：</p>
-      <ul>
-        <li>Android（游戏内置）：已完成</li>
-        <li>Windows（独立程序）：已完成</li>
-        <li>MacOS（独立程序）：已完成</li>
-        <li>Linux（独立程序）：已完成</li>
-      </ul>
     </aside>
 
     <!-- 右侧主体 -->
     <main class="main">
       <h2>下载</h2>
-      <a class="btn" href="javascript:downloadAndroid()">Android 版本</a><br>
-      <a class="btn" href="https://www.123684.com/s/WxHjVv-rjt0A?pwd=drdr">Windows 版本 (提取码：drdr)</a><br>
-      <a class="btn" href="https://www.123684.com/s/WxHjVv-rjt0A?pwd=drdr">MacOS 版本 (提取码：drdr)</a>
-      <a class="btn" href="https://www.123684.com/s/WxHjVv-rjt0A?pwd=drdr">Linux 版本 (提取码：drdr)</a>
+      <a class="btn" href="https://www.123912.com/s/WxHjVv-5pi0A?pwd=drdr">Android 版本</a><br>
+      <a class="btn" href="https://www.123684.com/s/WxHjVv-rjt0A?pwd=drdr">Windows 版本</a><br>
+      <a class="btn" href="https://www.123684.com/s/WxHjVv-rjt0A?pwd=drdr">MacOS 版本</a>
+      <a class="btn" href="https://www.123684.com/s/WxHjVv-rjt0A?pwd=drdr">Linux 版本</a>
       <footer>
-        Copyright © 2025 秋冥散雨_GenOuka
+        Copyright © 2025-2026 秋冥散雨_GenOuka<br>
+        <a class="btn" href="https://genouka.top/">看看其他项目</a>
       </footer>
     </main>
   </div>
+  <script type="text/javascript">
+  (() => {
+    const name = 'outbound-link-click';
+    document.querySelectorAll('a').forEach(a => {
+      if (a.host !== window.location.host && !a.getAttribute('data-umami-event')) {
+        a.setAttribute('data-umami-event', name);
+        a.setAttribute('data-umami-event-url', a.href);
+      }
+    });
+  })();
+</script>
 </body>
 
 </html>
