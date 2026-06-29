@@ -1,1 +1,0 @@
-import{s as e,v as t}from"./chunk-react-CzEbJPd1.js";import{r as n,t as r}from"./entry-index-BWqsIZZy.js";var i=t(),a=e();function o(){let e=(0,i.c)(1),t;return e[0]===Symbol.for(`react.memo_cache_sentinel`)?(t=(0,a.jsx)(n,{chapter:4,children:(0,a.jsx)(r,{chapter:4})}),e[0]=t):t=e[0],t}export{o as StoryChapter4};
