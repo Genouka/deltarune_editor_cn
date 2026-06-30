@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 # Deltarune Chinese Patch Installer
 # Usage: irm https://dreditorcn.genouka.top/hans.ps1 | iex
 
