@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 # Deltarune Chinese Patch Installer
 # Usage: irm https://dreditorcn.genouka.top/hans.ps1 | iex
 
@@ -50,9 +50,15 @@ function Write-Log {
 
 function Get-ToolPath {
     param([string]$ToolName)
-    # 检查临时目录
-    $savePath = Join-Path $env:TEMP $ToolName
-    if (Test-Path $savePath) { return $savePath }
+    
+    # 先检查当前目录
+    $localPath = Join-Path $PSScriptRoot $ToolName
+    if (Test-Path $localPath) { return $localPath }
+    
+    # 检查脚本所在目录
+    $localPath = Join-Path (Get-Location) $ToolName
+    if (Test-Path $localPath) { return $localPath }
+    
     # 检查 PATH
     $pathTool = Get-Command $ToolName -ErrorAction SilentlyContinue
     if ($pathTool) { return $pathTool.Source }
@@ -184,7 +190,7 @@ function Show-AssetSelectionDialog {
     # 文件说明
     $infoLabel = New-Object System.Windows.Forms.Label
     $infoLabel.Location = New-Object System.Drawing.Point(20, 310)
-    $infoLabel.Size = New-Object System.Drawing.Size(640, 60)
+    $infoLabel.Size = New-Object System.Drawing.Size(640, 50)
     $infoLabel.Text = "说明:`n- windowslinux: Windows/Linux 完整版`n- windowslinux_demo: Windows/Linux 试玩版`n- macos: macOS 版本"
     $form.Controls.Add($infoLabel)
     
@@ -742,17 +748,14 @@ function Main {
     Write-Log "用户选择: $($selectedAsset.name)"
     
     # 4. 下载补丁
-    Write-Log "正在从 https://ghfast.top/$($selectedAsset.browser_download_url) 下载补丁..."
     $patchFile = Download-Patch -Url "https://ghfast.top/$($selectedAsset.browser_download_url)" -FileName $selectedAsset.name
     if (-not $patchFile) { return }
     
     # 5. 解压补丁
-    Write-Log "正在解压补丁..."
     $extractDir = Extract-Patch -ArchivePath $patchFile -SevenZipPath $sevenZipPath
     if (-not $extractDir) { Clear-TempFiles; return }
     
     # 6. 选择游戏路径
-    Write-Log "请用户选择游戏路径..."
     $gamePathInput = Show-GamePathDialog
     if (-not $gamePathInput) {
         Write-Log "用户取消了路径选择"
