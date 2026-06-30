@@ -375,7 +375,8 @@ function Download-Patch {
     
     try {
         $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri $Url -OutFile $savePath -UseBasicParsing -ErrorAction Stop
+        # Invoke-WebRequest -Uri $Url -OutFile $savePath -UseBasicParsing -ErrorAction Stop
+        Start-BitsTransfer -Source $Url -Destination $savePath -Priority High -TransferType Download -ErrorAction Stop
         $ProgressPreference = 'Continue'
         
         $progressForm.Close()
@@ -642,6 +643,7 @@ function Install-Patch {
                 $destPath = Join-Path $targetChapterDir $relativePath
                 
                 Copy-ResourceFile -Source $file.FullName -Destination $destPath
+                Write-Log "已复制资源文件: $($file.FullName) -> $destPath"
             }
         }
     }
