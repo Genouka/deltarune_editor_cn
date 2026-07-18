@@ -112,7 +112,7 @@ function parseSaveV1(cursor) {
   const time = cursor.nextNumber();
 
   return {
-    format: 1, chapter: 1,
+    format: 1, chapter: 0,
     playerName, vesselName, party, money, xp, lv, inv, invc, inDarkWorld,
     characters,
     battle: { boltSpeed, grazeAmount, grazeSize, tension, maxTension },
@@ -169,7 +169,7 @@ function parseSaveV2(cursor) {
   const time = cursor.nextNumber();
 
   return {
-    format: 2, chapter: 2,
+    format: 2, chapter: 0,
     playerName, vesselName, party, money, xp, lv, inv, invc, inDarkWorld,
     characters,
     battle: { boltSpeed, grazeAmount, grazeSize, tension, maxTension },

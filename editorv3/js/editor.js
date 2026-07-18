@@ -137,13 +137,13 @@ function createDemoSave() {
     },
     flags: [], plot: 100, room: 144, time: 3600,
   };
-  // 5 characters for V2
+  // 5 characters for V2: index 0=Empty, 1=Kris, 2=Susie, 3=Ralsei, 4=Noelle
   const charData = [
+    { health: 0, maxHealth: 0, attack: 0, defence: 0, magic: 0, guts: 0, weapon: 0, primaryArmor: 0, secondaryArmor: 0, weaponStyle: 0 },
     { health: 90, maxHealth: 90, attack: 12, defence: 8, magic: 6, guts: 4, weapon: 1, primaryArmor: 1, secondaryArmor: 0, weaponStyle: 0 },
     { health: 110, maxHealth: 110, attack: 16, defence: 6, magic: 0, guts: 8, weapon: 2, primaryArmor: 2, secondaryArmor: 0, weaponStyle: 0 },
     { health: 70, maxHealth: 70, attack: 6, defence: 5, magic: 14, guts: 3, weapon: 9, primaryArmor: 3, secondaryArmor: 0, weaponStyle: 0 },
     { health: 80, maxHealth: 80, attack: 8, defence: 4, magic: 18, guts: 2, weapon: 12, primaryArmor: 0, secondaryArmor: 0, weaponStyle: 0 },
-    { health: 0, maxHealth: 0, attack: 0, defence: 0, magic: 0, guts: 0, weapon: 0, primaryArmor: 0, secondaryArmor: 0, weaponStyle: 0 },
   ];
   for (const cd of charData) {
     const ch = { ...cd, weaponStats: [], spells: [] };
@@ -182,8 +182,13 @@ async function loadFromPath(path) {
 function loadSaveContent(content) {
   try {
     currentSave = parseSave(content);
+    // 从文件名推断章节号（如 file_ch3_0 → chapter 3）
+    const chMatch = currentFileName.match(/ch(\d)/i);
+    if (chMatch) currentSave.chapter = parseInt(chMatch[1]);
+    else if (currentSave.format === 1) currentSave.chapter = 1;
+    else currentSave.chapter = 2;
     renderEditor();
-    showToast(t('loadSuccess') + ' ' + t('formatV') + currentSave.format + ' ' + t('chapter') + ': ' + currentSave.chapter);
+    showToast(t('loadSuccess') + ' ' + t('formatV') + currentSave.format);
   } catch (e) {
     showToast(t('parseFailed') + ': ' + e.message, 'error');
     if (e instanceof ParseError && e.details) {
@@ -271,7 +276,6 @@ function renderInfoSection(s) {
     <div class="grid">
       <label>文件: <strong>${esc(currentFileName)}</strong></label>
       <label>格式: <strong>V${s.format}</strong></label>
-      <label>章节: <strong>${locName(CHAPTERS_META, s.chapter, 'CHAPTERS_META')}</strong></label>
       <label>行数: <strong>${s.flags.length + 3}</strong> 标志数: <strong>${s.flags.length}</strong></label>
     </div>`;
   return info;
@@ -792,77 +796,98 @@ function renderStoryFlag(flagIdx, s) {
 // ========== 收集编辑数据 ==========
 function collectEdits() {
   const s = currentSave;
-  // 基本属性
-  s.playerName = getInput('playerName');
-  s.vesselName = getInput('vesselName');
-  s.money = getNum('money');
-  s.xp = getNum('xp');
-  s.lv = getNum('lv');
-  s.inv = getNum('inv');
-  s.invc = getNum('invc');
-  s.inDarkWorld = getChecked('inDarkWorld');
-  allowNonStandardParty = getChecked('allowNonStandardParty');
-  s.plot = getNum('plot');
-  s.room = getNum('room');
-  s.time = getNum('time');
-  s.party[0] = getNum('party-0');
-  s.party[1] = getNum('party-1');
-  s.party[2] = getNum('party-2');
-  s.battle.boltSpeed = getNum('battle-boltSpeed');
-  s.battle.grazeAmount = getNum('battle-grazeAmount');
-  s.battle.grazeSize = getNum('battle-grazeSize');
-  s.battle.tension = getNum('battle-tension');
-  s.battle.maxTension = getNum('battle-maxTension');
+  // 基本属性 - 使用 ?? 保留不在当前页面 DOM 中的字段原值
+  s.playerName = getInput('playerName') ?? s.playerName;
+  s.vesselName = getInput('vesselName') ?? s.vesselName;
+  s.money = getNum('money') ?? s.money;
+  s.xp = getNum('xp') ?? s.xp;
+  s.lv = getNum('lv') ?? s.lv;
+  s.inv = getNum('inv') ?? s.inv;
+  s.invc = getNum('invc') ?? s.invc;
+  const inDW = getChecked('inDarkWorld');
+  if (inDW !== undefined) s.inDarkWorld = inDW;
+  const ansp = getChecked('allowNonStandardParty');
+  if (ansp !== undefined) allowNonStandardParty = ansp;
+  s.plot = getNum('plot') ?? s.plot;
+  s.room = getNum('room') ?? s.room;
+  s.time = getNum('time') ?? s.time;
+  const p0 = getNum('party-0'), p1 = getNum('party-1'), p2 = getNum('party-2');
+  if (p0 !== undefined) s.party[0] = p0;
+  if (p1 !== undefined) s.party[1] = p1;
+  if (p2 !== undefined) s.party[2] = p2;
+  s.battle.boltSpeed = getNum('battle-boltSpeed') ?? s.battle.boltSpeed;
+  s.battle.grazeAmount = getNum('battle-grazeAmount') ?? s.battle.grazeAmount;
+  s.battle.grazeSize = getNum('battle-grazeSize') ?? s.battle.grazeSize;
+  s.battle.tension = getNum('battle-tension') ?? s.battle.tension;
+  s.battle.maxTension = getNum('battle-maxTension') ?? s.battle.maxTension;
 
   // 角色 - 按 party 槽位收集
   for (let slot = 0; slot < 3; slot++) {
     const charIdx = s.party[slot];
     if (charIdx === 0 || !s.characters[charIdx]) continue;
     const ch = s.characters[charIdx];
-    ch.health = getNum(`ch-${charIdx}-health`);
-    ch.maxHealth = getNum(`ch-${charIdx}-maxHealth`);
-    ch.attack = getNum(`ch-${charIdx}-attack`);
-    ch.defence = getNum(`ch-${charIdx}-defence`);
-    ch.magic = getNum(`ch-${charIdx}-magic`);
-    ch.guts = getNum(`ch-${charIdx}-guts`);
-    ch.weapon = getNum(`ch-${charIdx}-weapon`);
-    ch.primaryArmor = getNum(`ch-${charIdx}-primaryArmor`);
-    ch.secondaryArmor = getNum(`ch-${charIdx}-secondaryArmor`);
-    ch.weaponStyle = s.format === 1 ? getInput(`ch-${charIdx}-weaponStyle`) : getNum(`ch-${charIdx}-weaponStyle`);
+    ch.health = getNum(`ch-${charIdx}-health`) ?? ch.health;
+    ch.maxHealth = getNum(`ch-${charIdx}-maxHealth`) ?? ch.maxHealth;
+    ch.attack = getNum(`ch-${charIdx}-attack`) ?? ch.attack;
+    ch.defence = getNum(`ch-${charIdx}-defence`) ?? ch.defence;
+    ch.magic = getNum(`ch-${charIdx}-magic`) ?? ch.magic;
+    ch.guts = getNum(`ch-${charIdx}-guts`) ?? ch.guts;
+    ch.weapon = getNum(`ch-${charIdx}-weapon`) ?? ch.weapon;
+    ch.primaryArmor = getNum(`ch-${charIdx}-primaryArmor`) ?? ch.primaryArmor;
+    ch.secondaryArmor = getNum(`ch-${charIdx}-secondaryArmor`) ?? ch.secondaryArmor;
+    const ws = s.format === 1 ? getInput(`ch-${charIdx}-weaponStyle`) : getNum(`ch-${charIdx}-weaponStyle`);
+    if (ws !== undefined) ch.weaponStyle = ws;
     for (let k = 0; k < ch.spells.length; k++) {
-      ch.spells[k] = getNum(`ch-${charIdx}-spell-${k}`);
+      const sp = getNum(`ch-${charIdx}-spell-${k}`);
+      if (sp !== undefined) ch.spells[k] = sp;
     }
   }
 
   // 物品栏
-  for (let i = 0; i < s.inventory.consumables.length; i++)
-    s.inventory.consumables[i] = getNum(`inv-consumable-${i}`);
-  for (let i = 0; i < s.inventory.keyItems.length; i++)
-    s.inventory.keyItems[i] = getNum(`inv-keyitem-${i}`);
-  for (let i = 0; i < s.inventory.weapons.length; i++)
-    s.inventory.weapons[i] = getNum(`inv-weapon-${i}`);
-  for (let i = 0; i < s.inventory.armors.length; i++)
-    s.inventory.armors[i] = getNum(`inv-armor-${i}`);
+  for (let i = 0; i < s.inventory.consumables.length; i++) {
+    const v = getNum(`inv-consumable-${i}`);
+    if (v !== undefined) s.inventory.consumables[i] = v;
+  }
+  for (let i = 0; i < s.inventory.keyItems.length; i++) {
+    const v = getNum(`inv-keyitem-${i}`);
+    if (v !== undefined) s.inventory.keyItems[i] = v;
+  }
+  for (let i = 0; i < s.inventory.weapons.length; i++) {
+    const v = getNum(`inv-weapon-${i}`);
+    if (v !== undefined) s.inventory.weapons[i] = v;
+  }
+  for (let i = 0; i < s.inventory.armors.length; i++) {
+    const v = getNum(`inv-armor-${i}`);
+    if (v !== undefined) s.inventory.armors[i] = v;
+  }
   if (s.inventory.storage) {
-    for (let i = 0; i < s.inventory.storage.length; i++)
-      s.inventory.storage[i] = getNum(`inv-storage-${i}`);
+    for (let i = 0; i < s.inventory.storage.length; i++) {
+      const v = getNum(`inv-storage-${i}`);
+      if (v !== undefined) s.inventory.storage[i] = v;
+    }
   }
 
   // 光世界
   const lw = s.lightWorld;
-  lw.weapon = getNum('lw-weapon');
-  lw.armor = getNum('lw-armor');
-  lw.experience = getNum('lw-experience');
-  lw.level = getNum('lw-level');
-  lw.money = getNum('lw-money');
-  lw.health = getNum('lw-health');
-  lw.maxHealth = getNum('lw-maxHealth');
-  lw.attack = getNum('lw-attack');
-  lw.defence = getNum('lw-defence');
-  lw.weaponStrength = getNum('lw-weaponStrength');
-  lw.armorDefence = getNum('lw-armorDefence');
-  for (let i = 0; i < lw.items.length; i++) lw.items[i] = getNum(`lw-item-${i}`);
-  for (let i = 0; i < lw.phone.length; i++) lw.phone[i] = getNum(`lw-phone-${i}`);
+  lw.weapon = getNum('lw-weapon') ?? lw.weapon;
+  lw.armor = getNum('lw-armor') ?? lw.armor;
+  lw.experience = getNum('lw-experience') ?? lw.experience;
+  lw.level = getNum('lw-level') ?? lw.level;
+  lw.money = getNum('lw-money') ?? lw.money;
+  lw.health = getNum('lw-health') ?? lw.health;
+  lw.maxHealth = getNum('lw-maxHealth') ?? lw.maxHealth;
+  lw.attack = getNum('lw-attack') ?? lw.attack;
+  lw.defence = getNum('lw-defence') ?? lw.defence;
+  lw.weaponStrength = getNum('lw-weaponStrength') ?? lw.weaponStrength;
+  lw.armorDefence = getNum('lw-armorDefence') ?? lw.armorDefence;
+  for (let i = 0; i < lw.items.length; i++) {
+    const v = getNum(`lw-item-${i}`);
+    if (v !== undefined) lw.items[i] = v;
+  }
+  for (let i = 0; i < lw.phone.length; i++) {
+    const v = getNum(`lw-phone-${i}`);
+    if (v !== undefined) lw.phone[i] = v;
+  }
 
   // 标志
   document.querySelectorAll('.flag-input').forEach(input => {
@@ -1019,12 +1044,12 @@ function makeSelect(label, id, value, options) {
 
 function getInput(id) {
   const e = document.getElementById(id);
-  return e ? e.value : '';
+  return e ? e.value : undefined;
 }
 
 function getNum(id) {
   const e = document.getElementById(id);
-  return e ? parseInfNum(e.value) : 0;
+  return e ? parseInfNum(e.value) : undefined;
 }
 
 /** 解析可能为 inf 的数值 */
@@ -1037,7 +1062,7 @@ function parseInfNum(val) {
 
 function getChecked(id) {
   const e = document.getElementById(id);
-  return e ? e.checked : false;
+  return e ? e.checked : undefined;
 }
 
 // ========== Toast ==========
