@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>QM-Editor - DELTARUNE 存档编辑器</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#1e1e2e;--surface:#181825;--surface2:#11111b;--surface3:#313244;
+  --accent:#f38ba8;--accent2:#cba6f7;--accent3:#89b4fa;
+  --text:#cdd6f4;--text2:#a6adc8;--text3:#6c7086;
+  --border:#45475a;--input-bg:#1e1e2e;
+  --ok:#a6e3a1;--err:#f38ba8;--warn:#fab387
+}
+body{font:13px/1.4 'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+a{color:var(--accent3)}
+
+/* 顶栏 */
+.topbar{display:flex;align-items:center;gap:6px;padding:5px 10px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10}
+.topbar h1{font-size:15px;white-space:nowrap;margin-right:2px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.badge{font-size:10px;padding:1px 6px;border-radius:8px;color:#fff;font-weight:700}
+.badge-tauri{background:#89b4fa}.badge-jsbridge{background:#a6e3a1}.badge-web{background:#f9e2af;color:#1e1e2e}
+.topbar input[type=text]{flex:1;min-width:60px;max-width:220px;padding:3px 6px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);border-radius:3px;font-size:12px}
+.topbar button,.btn-sm{padding:3px 10px;border:1px solid var(--border);background:var(--surface3);color:var(--text);border-radius:3px;cursor:pointer;font-size:12px;white-space:nowrap;transition:background .15s,border-color .15s}
+.topbar button:hover,.btn-sm:hover{background:var(--accent);border-color:var(--accent);color:var(--surface2)}
+.topbar .spacer{flex:1}
+
+/* 主布局 */
+.main-layout{display:flex;flex:1;overflow:hidden}
+
+/* 左侧导航栏 */
+.sidebar{width:180px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.sidebar-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;padding:8px 10px 4px;letter-spacing:.5px}
+.nav-item{display:flex;align-items:center;gap:6px;padding:6px 10px;cursor:pointer;color:var(--text2);font-size:12px;border-left:3px solid transparent;transition:all .15s}
+.nav-item:hover{background:var(--surface3);color:var(--text)}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(243,139,168,.08)}
+.nav-item .nav-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
+.nav-item .nav-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-sep{height:1px;background:var(--border);margin:4px 10px}
+.nav-sub{padding-left:8px}
+.nav-sub .nav-item{font-size:11px;padding:4px 10px 4px 22px}
+
+/* 右侧内容区 */
+.content-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:10px 14px 40px}
+
+/* 文件列表 */
+#file-list{position:fixed;top:40px;right:10px;background:var(--surface);border:1px solid var(--border);border-radius:4px;max-height:200px;overflow-y:auto;z-index:20;min-width:160px;display:none;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+#file-list:not(:empty){display:block}
+.file-item{padding:4px 10px;cursor:pointer;font-size:12px}
+.file-item:hover{background:var(--surface3)}
+
+/* 区块 */
+.section{margin-bottom:10px;border:1px solid var(--border);border-radius:4px;padding:8px;background:var(--surface)}
+.section-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid var(--border)}
+
+/* 角色 */
+.char-block{margin-bottom:6px;padding:6px;border:1px solid var(--border);border-radius:3px;background:var(--surface2)}
+.char-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.char-avatar{width:48px;height:48px;border-radius:4px;border:2px solid var(--border);background:var(--bg);object-fit:contain;flex-shrink:0}
+.char-info{display:flex;flex-direction:column;gap:1px;min-width:0}
+.char-name{font-size:14px;font-weight:700;text-transform:uppercase}
+.char-title-text{font-size:11px;color:var(--text2)}
+.char-desc{font-size:10px;color:var(--text2);opacity:.8;font-style:italic}
+
+/* 网格字段 */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:4px 8px}
+.field{display:flex;align-items:center;gap:4px;font-size:12px}
+.field-label{min-width:60px;white-space:nowrap;color:var(--text2);font-size:11px}
+.field-input,.field-select{flex:1;min-width:0;padding:2px 4px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);border-radius:2px;font-size:12px}
+.field-check{flex:none;width:16px;height:16px;accent-color:var(--accent)}
+.field-select{max-width:140px}
+.field-unused select{border-color:var(--warn);opacity:.85}
+.field-unused::after{content:'⚠';font-size:10px;color:var(--warn)}
+
+/* 标志区 */
+.flags-toolbar{display:flex;gap:4px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.flags-toolbar input[type=text]{padding:2px 6px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);border-radius:2px;font-size:12px;width:140px}
+.flags-toolbar span{font-size:11px;color:var(--text2)}
+.flags-toolbar-check{font-size:11px;color:var(--text2);display:flex;align-items:center;gap:3px;cursor:pointer}
+.flags-toolbar-check input{accent-color:var(--accent)}
+.flags-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:2px 4px;max-height:500px;overflow-y:auto}
+.flag-item{display:flex;align-items:center;gap:2px}
+.flag-item label{font-size:10px;color:var(--text2);display:flex;align-items:center;gap:2px;flex-wrap:wrap;white-space:nowrap}
+.flag-known{background:rgba(255,255,255,.03);border-radius:2px}
+.flag-idx{color:var(--text3);min-width:28px}
+.flag-name{color:var(--accent2);font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis;cursor:help}
+.flag-input{width:48px;padding:1px 2px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-size:11px;border-radius:2px}
+.flag-hint{font-size:9px;color:var(--ok);max-width:60px;overflow:hidden;text-overflow:ellipsis;cursor:help}
+.flag-volatile{font-size:9px;color:var(--warn);font-weight:700;cursor:help}
+
+/* Story 页面 */
+.story-section{margin-bottom:12px;border:1px solid var(--border);border-radius:4px;padding:10px;background:var(--surface)}
+.story-section-title{font-size:13px;font-weight:700;color:var(--accent3);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.story-cluster{margin-bottom:8px;padding:8px;border:1px solid var(--border);border-radius:3px;background:var(--surface2)}
+.story-cluster-title{font-size:12px;font-weight:600;color:var(--accent2);margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid rgba(255,255,255,.05)}
+.story-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px}
+
+/* Story Flag Field - 可视化控件 */
+.sflag{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:3px;background:rgba(255,255,255,.02);font-size:12px;min-height:28px}
+.sflag:hover{background:rgba(255,255,255,.05)}
+.sflag-name{flex:1;min-width:0;font-size:11px;color:var(--text);overflow:hidden;text-overflow:ellipsis;cursor:help;white-space:nowrap}
+.sflag-name small{color:var(--text3);font-size:9px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sflag-check{width:18px;height:18px;accent-color:var(--accent);flex-shrink:0;cursor:pointer}
+.sflag-select{padding:2px 4px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);border-radius:2px;font-size:11px;max-width:120px}
+.sflag-number{width:56px;padding:2px 4px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-size:11px;border-radius:2px}
+.sflag-volatile{font-size:9px;color:var(--warn);font-weight:700}
+.sflag-hint{font-size:9px;color:var(--ok)}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:8px 20px;border-radius:4px;color:#fff;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:100}
+.toast.show{opacity:1}
+.toast-info{background:var(--surface3)}.toast-error{background:var(--err)}.toast-ok{background:var(--ok)}
+
+/* 移动端适配 */
+@media(max-width:700px){
+  .sidebar{width:44px}
+  .sidebar-title,.nav-label,.nav-sub .nav-item{display:none}
+  .nav-item{padding:8px 0;justify-content:center}
+  .nav-sep{margin:4px 6px}
+  .content-area{padding:8px}
+  .grid{grid-template-columns:1fr 1fr}
+  .flags-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+  .story-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>QM-Editor</h1>
+  <span id="platform-badge" class="badge badge-web">Web</span>
+  <input type="text" id="filename-input" data-i18n-placeholder="filenamePlaceholder" placeholder="文件名 (如 file_ch2_0)" />
+  <button id="btn-load-path" data-i18n="btnLoad">加载</button>
+  <button id="btn-pick" data-i18n="btnPick">选择文件</button>
+  <button id="btn-list" data-i18n="btnList">列出存档</button>
+  <button id="btn-demo" data-i18n="btnDemo">演示</button>
+  <div class="spacer"></div>
+  <button id="btn-save" data-i18n="btnSave">保存</button>
+  <button id="btn-close" data-i18n="btnClose">关闭</button>
+</div>
+<div id="file-list"></div>
+
+<div class="main-layout">
+  <!-- 左侧导航 -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-title" data-i18n="navTitle">导航</div>
+    <div class="nav-item active" data-page="basic"><span class="nav-icon">&#9881;</span><span class="nav-label" data-i18n="navBasic">基本属性</span></div>
+    <div class="nav-item" data-page="characters"><span class="nav-icon">&#9786;</span><span class="nav-label" data-i18n="navCharacters">角色</span></div>
+    <div class="nav-item" data-page="inventory"><span class="nav-icon">&#9993;</span><span class="nav-label" data-i18n="navInventory">物品栏</span></div>
+    <div class="nav-item" data-page="lightworld"><span class="nav-icon">&#9728;</span><span class="nav-label" data-i18n="navLightWorld">光世界</span></div>
+    <div class="nav-item" data-page="flags"><span class="nav-icon">&#9872;</span><span class="nav-label" data-i18n="navFlags">标志</span></div>
+    <div class="nav-sep"></div>
+    <div class="sidebar-title" data-i18n="navStory">剧情</div>
+    <div class="nav-item" data-page="story"><span class="nav-icon">&#9733;</span><span class="nav-label" data-i18n="navStory">故事进度</span></div>
+  </nav>
+
+  <!-- 右侧内容 -->
+  <div class="content-area" id="editor-root">
+    <div class="section" style="text-align:center;color:var(--text2);padding:40px">
+      选择文件或输入文件名加载存档<br>
+      <small>支持 ?filename=file_ch2_0 形式的 URL 参数</small>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script type="module" src="./js/editor.js?v=7"></script>
+</body>
+</html>
