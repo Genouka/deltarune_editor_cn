@@ -109,6 +109,18 @@ a{color:var(--accent3)}
 
 /* Toast */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:8px 20px;border-radius:4px;color:#fff;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:100}
+
+/* 关于页面 */
+.about-page{text-align:center;padding:30px 10px}
+.about-page h2{font-size:20px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.about-page .about-version{font-size:12px;color:var(--text3);margin-bottom:20px}
+.about-page .about-author{font-size:14px;color:var(--text);margin-bottom:8px}
+.about-page .about-site{font-size:13px;margin-bottom:20px}
+.about-page .about-site a{color:var(--accent3);text-decoration:none}
+.about-page .about-site a:hover{text-decoration:underline}
+.about-page .about-legacy{margin-top:16px}
+.about-page .about-legacy a{display:inline-block;padding:8px 20px;border:1px solid var(--accent2);color:var(--accent2);border-radius:4px;text-decoration:none;font-size:13px;transition:all .15s}
+.about-page .about-legacy a:hover{background:var(--accent2);color:var(--surface2)}
 .toast.show{opacity:1}
 .toast-info{background:var(--surface3)}.toast-error{background:var(--err)}.toast-ok{background:var(--ok)}
 
@@ -153,6 +165,8 @@ a{color:var(--accent3)}
     <div class="nav-sep"></div>
     <div class="sidebar-title" data-i18n="navStory">剧情</div>
     <div class="nav-item" data-page="story"><span class="nav-icon">&#9733;</span><span class="nav-label" data-i18n="navStory">故事进度</span></div>
+    <div class="nav-sep"></div>
+    <div class="nav-item" data-page="about"><span class="nav-icon">&#9432;</span><span class="nav-label" data-i18n="navAbout">关于</span></div>
   </nav>
 
   <!-- 右侧内容 -->

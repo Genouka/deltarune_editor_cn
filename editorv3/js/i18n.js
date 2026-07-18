@@ -45,6 +45,7 @@ const zhCN = {
   room: '房间',
   time: '时间',
   party: '队伍',
+  allowNonStandardParty: '允许非标准队伍组合',
   boltSpeed: '弹速',
   grazeAmount: '擦弹量',
   grazeSize: '擦弹大小',
@@ -118,6 +119,11 @@ const zhCN = {
 
   // 格式
   formatV: 'V',
+
+  // 关于
+  navAbout: '关于',
+  aboutAuthor: '由秋冥散雨_Genouka开发',
+  aboutLegacy: '进入旧版编辑器',
 };
 
 const enUS = {
@@ -150,6 +156,7 @@ const enUS = {
   room: 'Room',
   time: 'Time',
   party: 'Party',
+  allowNonStandardParty: 'Allow non-standard party',
   boltSpeed: 'Bolt Speed',
   grazeAmount: 'Graze Amt',
   grazeSize: 'Graze Size',
@@ -207,6 +214,9 @@ const enUS = {
   placeholder: 'Pick a file or enter filename to load',
   urlHint: 'Supports ?filename=file_ch2_0 URL parameter',
   formatV: 'V',
+  navAbout: 'About',
+  aboutAuthor: 'Developed by 秋冥散雨_Genouka',
+  aboutLegacy: 'Legacy Editor',
 };
 
 const locales = { 'zh-CN': zhCN, 'en-US': enUS };

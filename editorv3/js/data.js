@@ -30,11 +30,20 @@ export const CHARACTERS = {
   NOELLE: 4,
 };
 export const CHARACTERS_META = {
-  [CHARACTERS.EMPTY]: { displayName: 'Empty', title: 'Empty', titleDesc: 'This is empty slot' },
-  [CHARACTERS.KRIS]: { displayName: 'Kris', title: 'Hero', titleDesc: 'Body contains a human SOUL', color: '#89b4fa' },
-  [CHARACTERS.SUSIE]: { displayName: 'Susie', title: 'Mean Girl', titleDesc: "Won't do anything but fight", color: '#f38ba8' },
-  [CHARACTERS.RALSEI]: { displayName: 'Ralsei', title: 'Lonely Prince', titleDesc: 'Dark-World being. Has no subjects', color: '#a6e3a1' },
-  [CHARACTERS.NOELLE]: { displayName: 'Noelle', title: 'Snowcaster', titleDesc: 'Might be able to use some cool moves', color: '#f9e2af' },
+  [CHARACTERS.EMPTY]: { displayName: 'Empty', title: 'Empty', titleDesc: 'This is empty slot', allowedSlots: [1, 2] },
+  [CHARACTERS.KRIS]: { displayName: 'Kris', title: 'Hero', titleDesc: 'Body contains a human SOUL', color: '#89b4fa', allowedSlots: [0] },
+  [CHARACTERS.SUSIE]: { displayName: 'Susie', title: 'Mean Girl', titleDesc: "Won't do anything but fight", color: '#f38ba8', allowedSlots: [1, 2] },
+  [CHARACTERS.RALSEI]: { displayName: 'Ralsei', title: 'Lonely Prince', titleDesc: 'Dark-World being. Has no subjects', color: '#a6e3a1', allowedSlots: [1, 2] },
+  [CHARACTERS.NOELLE]: { displayName: 'Noelle', title: 'Snowcaster', titleDesc: 'Might be able to use some cool moves', color: '#f9e2af', allowedSlots: [1, 2] },
+};
+
+// === 章节可用角色 ===
+export const CHAPTERS_CHARACTERS = {
+  [1]: [CHARACTERS.EMPTY, CHARACTERS.KRIS, CHARACTERS.SUSIE, CHARACTERS.RALSEI],
+  [2]: [CHARACTERS.EMPTY, CHARACTERS.KRIS, CHARACTERS.SUSIE, CHARACTERS.RALSEI, CHARACTERS.NOELLE],
+  [3]: [CHARACTERS.EMPTY, CHARACTERS.KRIS, CHARACTERS.SUSIE, CHARACTERS.RALSEI, CHARACTERS.NOELLE],
+  [4]: [CHARACTERS.EMPTY, CHARACTERS.KRIS, CHARACTERS.SUSIE, CHARACTERS.RALSEI, CHARACTERS.NOELLE],
+  [5]: [CHARACTERS.EMPTY, CHARACTERS.KRIS, CHARACTERS.SUSIE, CHARACTERS.RALSEI, CHARACTERS.NOELLE],
 };
 
 // === 消耗品 ===

@@ -7,7 +7,7 @@ import { serializeSave } from './save-serializer.js';
 import { Platform } from './platform.js';
 import { t, idxText } from './i18n.js';
 import {
-  CHAPTERS, CHAPTERS_META, CHARACTERS, CHARACTERS_META,
+  CHAPTERS, CHAPTERS_META, CHARACTERS, CHARACTERS_META, CHAPTERS_CHARACTERS,
   CONSUMABLES, CONSUMABLES_META, WEAPONS, WEAPONS_META,
   ARMORS, ARMORS_META, KEYITEMS, KEYITEMS_META, SPELLS, SPELLS_META,
   LIGHTWORLDITEMS, LIGHTWORLDITEMS_META, PHONECONTACTS, PHONECONTACTS_META,
@@ -21,6 +21,7 @@ let currentSave = null; // 当前解析后的存档对象
 let currentFileName = ''; // 当前文件名
 let currentFilePath = ''; // 当前文件路径（Tauri）
 let currentPage = 'basic'; // 当前导航页面
+let allowNonStandardParty = false; // 允许非标准队伍组合
 
 // ========== 本地化辅助 ==========
 /** metaToOptions 的本地化版本：自动注入中文翻译 */
@@ -96,6 +97,13 @@ function bindEvents() {
   // flags-search 在 renderFlagsSection 中动态创建，使用事件委托
   document.addEventListener('click', (e) => {
     if (e.target.id === 'btn-flags-search') filterFlags();
+  });
+  // allowNonStandardParty checkbox 变更时重新渲染
+  document.addEventListener('change', (e) => {
+    if (e.target.id === 'allowNonStandardParty') {
+      allowNonStandardParty = e.target.checked;
+      renderCurrentPage();
+    }
   });
   // 演示按钮
   on('btn-demo', 'click', () => {
@@ -236,10 +244,12 @@ function navigateTo(page) {
 }
 
 function renderCurrentPage() {
-  if (!currentSave) return;
-  const s = currentSave;
   const root = document.getElementById('editor-root');
   root.innerHTML = '';
+  // 关于页面不需要加载存档
+  if (currentPage === 'about') { root.appendChild(renderAboutSection()); return; }
+  if (!currentSave) return;
+  const s = currentSave;
   switch (currentPage) {
     case 'basic': root.appendChild(renderInfoSection(s)); root.appendChild(renderBasicSection(s)); break;
     case 'characters': root.appendChild(renderCharactersSection(s)); break;
@@ -284,9 +294,12 @@ function renderBasicSection(s) {
   g.appendChild(makeInput(t('room'), 'room', s.room, 'number'));
   g.appendChild(makeInput(t('time'), 'time', s.time, 'number'));
   // 队伍
-  g.appendChild(makeSelect(`[0] ${t('party')}`, 'party-0', s.party[0], loc(CHARACTERS_META, 'CHARACTERS_META')));
-  g.appendChild(makeSelect(`[1] ${t('party')}`, 'party-1', s.party[1], loc(CHARACTERS_META, 'CHARACTERS_META')));
-  g.appendChild(makeSelect(`[2] ${t('party')}`, 'party-2', s.party[2], loc(CHARACTERS_META, 'CHARACTERS_META')));
+  g.appendChild(makeCheckbox(t('allowNonStandardParty'), 'allowNonStandardParty', allowNonStandardParty));
+  const chapter = s.chapter || 2;
+  for (let slot = 0; slot < 3; slot++) {
+    const opts = getPartySlotOptions(chapter, slot, s.party);
+    g.appendChild(makeSelect(`[${slot}] ${t('party')}`, `party-${slot}`, s.party[slot], opts));
+  }
   // 战斗
   g.appendChild(makeInput(t('boltSpeed'), 'battle-boltSpeed', s.battle.boltSpeed, 'number'));
   g.appendChild(makeInput(t('grazeAmount'), 'battle-grazeAmount', s.battle.grazeAmount, 'number'));
@@ -302,9 +315,12 @@ function renderCharactersSection(s) {
   const sec = el('div', 'section');
   sec.innerHTML = `<div class="section-title">${t('sectionCharacters')}</div>`;
   const charSvgMap = { 1: 'kris', 2: 'susie', 3: 'ralsei', 4: 'noelle' };
-  for (let i = 0; i < s.characters.length; i++) {
-    const ch = s.characters[i];
-    const charIdx = i + 1; // character index (1=Kris, 2=Susie, etc.)
+  // 只显示队伍中选中的角色，按 party 槽位遍历
+  for (let slot = 0; slot < 3; slot++) {
+    const charIdx = s.party[slot]; // CharacterIndex: 0=Empty, 1=Kris, 2=Susie, 3=Ralsei, 4=Noelle
+    if (charIdx === 0) continue; // 跳过空槽位
+    if (!s.characters[charIdx]) continue; // 数据不存在则跳过
+    const ch = s.characters[charIdx];
     const charMeta = CHARACTERS_META[charIdx] || CHARACTERS_META[0];
     const chDiv = el('div', 'char-block');
     // 头像 + title 描述
@@ -321,7 +337,7 @@ function renderCharactersSection(s) {
     const infoDiv = el('div', 'char-info');
     const nameEl = el('div', 'char-name');
     if (charMeta.color) nameEl.style.color = charMeta.color;
-    nameEl.textContent = '[' + charIdx + '] ' + charMeta.displayName;
+    nameEl.textContent = `[${slot}] ${charMeta.displayName}`;
     infoDiv.appendChild(nameEl);
     const titleEl = el('div', 'char-title-text');
     titleEl.textContent = `LV${s.lv || 1} ${charMeta.title || ''}`;
@@ -334,24 +350,24 @@ function renderCharactersSection(s) {
     headerDiv.appendChild(infoDiv);
     chDiv.appendChild(headerDiv);
     const g = el('div', 'grid');
-    g.appendChild(makeInput(t('hp'), `ch-${i}-health`, ch.health, 'number'));
-    g.appendChild(makeInput(t('maxHp'), `ch-${i}-maxHealth`, ch.maxHealth, 'number'));
-    g.appendChild(makeInput(t('atk'), `ch-${i}-attack`, ch.attack, 'number'));
-    g.appendChild(makeInput(t('def'), `ch-${i}-defence`, ch.defence, 'number'));
-    g.appendChild(makeInput(t('mag'), `ch-${i}-magic`, ch.magic, 'number'));
-    g.appendChild(makeInput(t('guts'), `ch-${i}-guts`, ch.guts, 'number'));
-    g.appendChild(makeSelect(t('weapon'), `ch-${i}-weapon`, ch.weapon, loc(WEAPONS_META, 'WEAPONS_META')));
-    g.appendChild(makeSelect(t('primaryArmor'), `ch-${i}-primaryArmor`, ch.primaryArmor, loc(ARMORS_META, 'ARMORS_META')));
-    g.appendChild(makeSelect(t('secondaryArmor'), `ch-${i}-secondaryArmor`, ch.secondaryArmor, loc(ARMORS_META, 'ARMORS_META')));
+    g.appendChild(makeInput(t('hp'), `ch-${charIdx}-health`, ch.health, 'number'));
+    g.appendChild(makeInput(t('maxHp'), `ch-${charIdx}-maxHealth`, ch.maxHealth, 'number'));
+    g.appendChild(makeInput(t('atk'), `ch-${charIdx}-attack`, ch.attack, 'number'));
+    g.appendChild(makeInput(t('def'), `ch-${charIdx}-defence`, ch.defence, 'number'));
+    g.appendChild(makeInput(t('mag'), `ch-${charIdx}-magic`, ch.magic, 'number'));
+    g.appendChild(makeInput(t('guts'), `ch-${charIdx}-guts`, ch.guts, 'number'));
+    g.appendChild(makeSelect(t('weapon'), `ch-${charIdx}-weapon`, ch.weapon, loc(WEAPONS_META, 'WEAPONS_META')));
+    g.appendChild(makeSelect(t('primaryArmor'), `ch-${charIdx}-primaryArmor`, ch.primaryArmor, loc(ARMORS_META, 'ARMORS_META')));
+    g.appendChild(makeSelect(t('secondaryArmor'), `ch-${charIdx}-secondaryArmor`, ch.secondaryArmor, loc(ARMORS_META, 'ARMORS_META')));
     if (s.format === 1) {
-      g.appendChild(makeInput(t('weaponStyle'), `ch-${i}-weaponStyle`, ch.weaponStyle, 'text'));
+      g.appendChild(makeInput(t('weaponStyle'), `ch-${charIdx}-weaponStyle`, ch.weaponStyle, 'text'));
     } else {
-      g.appendChild(makeInput(t('weaponStyle'), `ch-${i}-weaponStyle`, ch.weaponStyle, 'number'));
+      g.appendChild(makeInput(t('weaponStyle'), `ch-${charIdx}-weaponStyle`, ch.weaponStyle, 'number'));
     }
     // 法术
     for (let k = 0; k < ch.spells.length; k++) {
       const spellOpts = loc(SPELLS_META, 'SPELLS_META');
-      const spellField = makeSelect(`${t('spell')}${k+1}`, `ch-${i}-spell-${k}`, ch.spells[k], spellOpts);
+      const spellField = makeSelect(`${t('spell')}${k+1}`, `ch-${charIdx}-spell-${k}`, ch.spells[k], spellOpts);
       // 标记 unused 法术
       const spellMeta = SPELLS_META[ch.spells[k]];
       if (spellMeta && spellMeta.unused) {
@@ -785,6 +801,7 @@ function collectEdits() {
   s.inv = getNum('inv');
   s.invc = getNum('invc');
   s.inDarkWorld = getChecked('inDarkWorld');
+  allowNonStandardParty = getChecked('allowNonStandardParty');
   s.plot = getNum('plot');
   s.room = getNum('room');
   s.time = getNum('time');
@@ -797,21 +814,23 @@ function collectEdits() {
   s.battle.tension = getNum('battle-tension');
   s.battle.maxTension = getNum('battle-maxTension');
 
-  // 角色
-  for (let i = 0; i < s.characters.length; i++) {
-    const ch = s.characters[i];
-    ch.health = getNum(`ch-${i}-health`);
-    ch.maxHealth = getNum(`ch-${i}-maxHealth`);
-    ch.attack = getNum(`ch-${i}-attack`);
-    ch.defence = getNum(`ch-${i}-defence`);
-    ch.magic = getNum(`ch-${i}-magic`);
-    ch.guts = getNum(`ch-${i}-guts`);
-    ch.weapon = getNum(`ch-${i}-weapon`);
-    ch.primaryArmor = getNum(`ch-${i}-primaryArmor`);
-    ch.secondaryArmor = getNum(`ch-${i}-secondaryArmor`);
-    ch.weaponStyle = s.format === 1 ? getInput(`ch-${i}-weaponStyle`) : getNum(`ch-${i}-weaponStyle`);
+  // 角色 - 按 party 槽位收集
+  for (let slot = 0; slot < 3; slot++) {
+    const charIdx = s.party[slot];
+    if (charIdx === 0 || !s.characters[charIdx]) continue;
+    const ch = s.characters[charIdx];
+    ch.health = getNum(`ch-${charIdx}-health`);
+    ch.maxHealth = getNum(`ch-${charIdx}-maxHealth`);
+    ch.attack = getNum(`ch-${charIdx}-attack`);
+    ch.defence = getNum(`ch-${charIdx}-defence`);
+    ch.magic = getNum(`ch-${charIdx}-magic`);
+    ch.guts = getNum(`ch-${charIdx}-guts`);
+    ch.weapon = getNum(`ch-${charIdx}-weapon`);
+    ch.primaryArmor = getNum(`ch-${charIdx}-primaryArmor`);
+    ch.secondaryArmor = getNum(`ch-${charIdx}-secondaryArmor`);
+    ch.weaponStyle = s.format === 1 ? getInput(`ch-${charIdx}-weaponStyle`) : getNum(`ch-${charIdx}-weaponStyle`);
     for (let k = 0; k < ch.spells.length; k++) {
-      ch.spells[k] = getNum(`ch-${i}-spell-${k}`);
+      ch.spells[k] = getNum(`ch-${charIdx}-spell-${k}`);
     }
   }
 
@@ -849,7 +868,7 @@ function collectEdits() {
   document.querySelectorAll('.flag-input').forEach(input => {
     const idx = parseInt(input.dataset.flagIndex);
     if (idx >= 0 && idx < s.flags.length) {
-      s.flags[idx] = Number(input.value) || 0;
+      s.flags[idx] = parseInfNum(input.value);
     }
   });
   // boolean 标志 checkbox
@@ -869,7 +888,7 @@ function collectEdits() {
   document.querySelectorAll('.sflag-number').forEach(input => {
     const idx = parseInt(input.dataset.flagIndex);
     if (idx >= 0 && idx < s.flags.length) {
-      s.flags[idx] = Number(input.value) || 0;
+      s.flags[idx] = parseInfNum(input.value);
     }
   });
   document.querySelectorAll('.sflag-select').forEach(select => {
@@ -877,6 +896,56 @@ function collectEdits() {
     if (idx >= 0 && idx < s.flags.length) {
       s.flags[idx] = Number(select.value) || 0;
     }
+  });
+}
+
+// ========== 关于页面 ==========
+function renderAboutSection() {
+  const sec = el('div', 'about-page');
+  sec.innerHTML = `
+    <h2>QM-Editor</h2>
+    <div class="about-version">v3 - DELTARUNE 存档编辑器</div>
+    <div class="about-author">${t('aboutAuthor')}</div>
+    <div class="about-site"><a href="https://dreditorcn.genouka.top/" target="_blank" rel="noopener">https://dreditorcn.genouka.top/</a></div>
+    ${Platform.type === 'jsbridge' ? `<div class="about-legacy"><a href="/v2/editor/" target="_blank" rel="noopener">${t('aboutLegacy')}</a></div>` : ''}
+  `;
+  return sec;
+}
+
+// ========== 队伍选项逻辑 ==========
+/** 参考 tenna-editor 的 getPartySlotBaseOptions + Overview 去重逻辑 */
+function getPartySlotOptions(chapter, slot, party) {
+  const chapterChars = CHAPTERS_CHARACTERS[chapter] || CHAPTERS_CHARACTERS[2];
+  let available;
+  if (allowNonStandardParty) {
+    available = [...chapterChars];
+  } else {
+    available = [];
+    for (const charId of chapterChars) {
+      const meta = CHARACTERS_META[charId];
+      if (meta && meta.allowedSlots && meta.allowedSlots.includes(slot)) {
+        available.push(charId);
+      }
+    }
+  }
+  available.sort((a, b) => a - b);
+
+  // 去重：非标准模式下不过滤，标准模式下移除其他槽位已使用的角色
+  if (!allowNonStandardParty) {
+    const usedInOtherSlots = new Set(
+      party.filter((member, i) => member !== 0 && i !== slot)
+    );
+    available = available.filter(id => id === party[slot] || !usedInOtherSlots.has(id));
+    // 如果 slot 2 不是 Empty，slot 1 的 Empty 选项移除
+    if (party[2] !== 0 && slot === 1) {
+      available = available.filter(id => id !== 0);
+    }
+  }
+
+  return available.map(id => {
+    const meta = CHARACTERS_META[id] || { displayName: `Unknown (${id})` };
+    const label = (LOCALE.CHARACTERS_META && LOCALE.CHARACTERS_META[id]) || meta.displayName;
+    return { value: id, label, meta };
   });
 }
 
@@ -898,10 +967,18 @@ function makeInput(label, id, value, type) {
   const span = el('span', 'field-label');
   span.textContent = label;
   const input = document.createElement('input');
-  input.type = type;
+  if (type === 'number') {
+    // 使用 text 类型以支持 inf 输入
+    input.type = 'text';
+    input.inputMode = 'numeric';
+    input.className = 'field-input';
+    input.value = (value === Infinity || value === -Infinity) ? 'inf' : value;
+  } else {
+    input.type = type;
+    input.className = 'field-input';
+    input.value = value;
+  }
   input.id = id;
-  input.className = 'field-input';
-  input.value = value;
   wrap.appendChild(span);
   wrap.appendChild(input);
   return wrap;
@@ -947,7 +1024,15 @@ function getInput(id) {
 
 function getNum(id) {
   const e = document.getElementById(id);
-  return e ? (Number(e.value) || 0) : 0;
+  return e ? parseInfNum(e.value) : 0;
+}
+
+/** 解析可能为 inf 的数值 */
+function parseInfNum(val) {
+  const v = String(val).trim().toLowerCase();
+  if (v === 'inf' || v === 'infinity' || v === '+inf' || v === '+infinity') return Infinity;
+  if (v === '-inf' || v === '-infinity') return -Infinity;
+  return Number(val) || 0;
 }
 
 function getChecked(id) {

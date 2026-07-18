@@ -30,6 +30,8 @@ export class LineCursor {
     const line = this.#nextLine();
     const trimmed = line.trim().toLowerCase();
     if (trimmed === '' || trimmed === 'null' || trimmed === 'undefined' || trimmed === 'nan') return 0;
+    if (trimmed === 'inf' || trimmed === 'infinity' || trimmed === '+inf' || trimmed === '+infinity') return Infinity;
+    if (trimmed === '-inf' || trimmed === '-infinity') return -Infinity;
     const parsed = Number(line);
     if (isNaN(parsed)) throw new Error(`Failed to parse number from line ${this.#pos}: "${line}"`);
     return parsed;

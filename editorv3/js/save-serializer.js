@@ -4,6 +4,8 @@
  */
 
 function serializeNumber(value) {
+  if (value === Infinity) return 'Infinity';
+  if (value === -Infinity) return '-Infinity';
   if (value >= 1e6) return value.toExponential().replace(/e\+(\d)$/, 'e+0$1');
   return String(value);
 }
