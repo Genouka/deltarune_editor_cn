@@ -16,9 +16,9 @@ export const Platform = {
       return;
     }
     // 检测 JSBridge (Android WebView)
-    if (window.android && window.android.readFile) {
+    if (window.Android && window.Android.readFile) {
       this.type = 'jsbridge';
-      this.jsbridge = window.android;
+      this.jsbridge = window.Android;
       return;
     }
     this.type = 'web';
