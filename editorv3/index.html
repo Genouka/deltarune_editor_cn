@@ -121,6 +121,24 @@ a{color:var(--accent3)}
 .about-page .about-legacy{margin-top:16px}
 .about-page .about-legacy a{display:inline-block;padding:8px 20px;border:1px solid var(--accent2);color:var(--accent2);border-radius:4px;text-decoration:none;font-size:13px;transition:all .15s}
 .about-page .about-legacy a:hover{background:var(--accent2);color:var(--surface2)}
+
+/* 招募页面 */
+.recruit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:8px}
+.recruit-card{border:1px solid var(--border);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+.recruit-card-inner{padding:8px 10px;flex:1;display:flex;flex-direction:column;gap:4px}
+.recruit-card.unused{opacity:.6}
+.recruit-name{font-size:13px;font-weight:600;text-transform:uppercase}
+.recruit-status{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3)}
+.recruit-bar{height:3px;border-radius:1px;margin-top:auto}
+.recruit-row{display:flex;align-items:center;gap:6px;margin-top:4px}
+.recruit-row input[type=checkbox]{margin:0}
+.recruit-row label{font-size:12px;cursor:pointer}
+.recruit-count{font-size:12px;color:var(--text2)}
+.recruit-count input{width:48px;margin-left:4px}
+.cafe-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.cafe-seat{display:flex;flex-direction:column;gap:2px}
+.cafe-seat label{font-size:12px;color:var(--text2)}
+.cafe-seat select{width:100%}
 .toast.show{opacity:1}
 .toast-info{background:var(--surface3)}.toast-error{background:var(--err)}.toast-ok{background:var(--ok)}
 
@@ -165,6 +183,7 @@ a{color:var(--accent3)}
     <div class="nav-sep"></div>
     <div class="sidebar-title" data-i18n="navStory">剧情</div>
     <div class="nav-item" data-page="story"><span class="nav-icon">&#9733;</span><span class="nav-label" data-i18n="navStory">故事进度</span></div>
+    <div class="nav-item" data-page="recruits"><span class="nav-icon">&#9876;</span><span class="nav-label" data-i18n="navRecruits">招募</span></div>
     <div class="nav-sep"></div>
     <div class="nav-item" data-page="about"><span class="nav-icon">&#9432;</span><span class="nav-label" data-i18n="navAbout">关于</span></div>
   </nav>

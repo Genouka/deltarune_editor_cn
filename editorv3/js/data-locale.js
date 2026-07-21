@@ -265,4 +265,45 @@ export const LOCALE = {
 
   // 标志描述翻译（flags-meta.js 含 1300+ 条，此处按需补充关键标志的中文描述）
   FLAGS_META: {},
+
+  // 敌人名称翻译
+  ENEMIES_META: {
+    1: '调试敌人', 2: 'Lancer 1', 3: 'Dummy', 4: 'Ralsei（教程）',
+    5: 'Rudinn', 6: 'Hathy', 7: 'Clover 1', 9: 'C. Round',
+    10: 'K. Round 1', 11: 'Ponman', 12: 'Lancer 2', 13: 'Rabbick',
+    14: 'Bloxer', 15: 'Jigsawry', 16: 'Clover 2', 17: 'DoomTank',
+    18: 'Lancer 3', 19: 'Susie&Lancer', 20: 'JEVIL',
+    21: 'K. Round 2', 22: 'Rudinn Ranger', 23: 'Head Hathy', 25: 'King',
+    30: 'Ambyu-Lance', 31: 'Poppup', 32: 'Tasque', 33: 'Werewire',
+    34: 'Maus', 35: 'Virovirokun', 36: 'Swatchling', 37: "Cap'n",
+    38: 'K_K', 39: 'Sweet', 40: 'Werewerewire', 41: 'GrazeTest',
+    42: 'Tasque Manager', 43: 'Berdly 1', 44: 'Mauswheel',
+    45: 'Rouxls 1', 46: 'Berdly 2', 47: 'Clover（道场）', 48: 'Queen',
+    49: 'Spamton', 50: 'Spamton NEO', 51: 'GIGA Queen',
+    52: 'Jigsaw Joe（道场）', 53: 'Pipis',
+    54: 'Shadowguy', 55: 'Shuttah', 56: 'Zapper', 57: 'Ribbick',
+    58: 'Watercooler', 59: 'Pippins', 60: 'Elnina', 61: 'Lanino',
+    62: 'Guei', 63: 'Balthizard', 64: 'Bibliox', 65: 'Mizzle',
+    66: 'Wicabel', 67: 'Winglade', 68: 'Organikk', 69: 'Miss Mizzle',
+    70: 'Floradinn', 71: 'Leafling', 72: 'Shi', 73: 'Shinobeetle',
+    74: 'KawKaw', 75: 'Sheary', 76: 'Netskie', 77: 'Terakota',
+    101: 'Boss 1', 102: 'Rouxls 2', 103: 'Tenna 1', 104: 'Knight',
+    105: 'Tenna 2', 106: 'Elnina（道场）', 107: 'Lanino（道场）',
+    108: 'Titan', 109: 'Titan Spawn',
+  },
+
+  // RECRUITS 翻译（Cafe 座位下拉显示）
+  RECRUITS: {
+    5: 'Rudinn', 6: 'Hathy', 11: 'Ponman', 13: 'Rabbick',
+    14: 'Bloxer', 15: 'Jigsawry', 20: 'JEVIL', 22: 'Rudinn Ranger',
+    23: 'Head Hathy', 30: 'Ambyu-Lance', 31: 'Poppup', 32: 'Tasque',
+    33: 'Werewire', 34: 'Maus', 35: 'Virovirokun', 36: 'Swatchling',
+    40: 'Werewerewire', 42: 'Tasque Manager', 44: 'Mauswheel',
+    54: 'Shadowguy', 55: 'Shuttah', 56: 'Zapper', 57: 'Ribbick',
+    58: 'Watercooler', 59: 'Pippins', 60: 'Elnina', 61: 'Lanino',
+    62: 'Guei', 63: 'Balthizard', 64: 'Bibliox', 65: 'Mizzle',
+    66: 'Wicabel', 67: 'Winglade', 68: 'Organikk', 69: 'Ms. Mizzle',
+    70: 'Floradinn', 71: 'Leafling', 72: 'Shi', 73: 'Shinobeetle',
+    74: 'KawKaw', 75: 'Sheary', 76: 'Netskie', 77: 'Terakota',
+  },
 };

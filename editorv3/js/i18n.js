@@ -124,6 +124,19 @@ const zhCN = {
   navAbout: '关于',
   aboutAuthor: '由秋冥散雨_Genouka开发',
   aboutLegacy: '进入旧版编辑器',
+
+  // 招募
+  navRecruits: '招募',
+  sectionRecruits: '招募敌人',
+  showNonRecruitable: '显示不可招募的敌人',
+  cafeSeating: 'Cafe 座位',
+  recruited: '已招募',
+  recruitCount: '招募数量',
+  status: '状态',
+  recruitLost: '已丢失',
+  recruitRecruited: '已招募',
+  recruitNotRecruited: '未招募',
+  recruitUnused: '未使用',
 };
 
 const enUS = {
@@ -217,6 +230,19 @@ const enUS = {
   navAbout: 'About',
   aboutAuthor: 'Developed by 秋冥散雨_Genouka',
   aboutLegacy: 'Legacy Editor',
+
+  // Recruits
+  navRecruits: 'Recruits',
+  sectionRecruits: 'Recruit Enemies',
+  showNonRecruitable: 'Show non-recruitable enemies',
+  cafeSeating: 'Cafe Seating',
+  recruited: 'Recruited',
+  recruitCount: 'Recruit count',
+  status: 'Status',
+  recruitLost: 'Lost',
+  recruitRecruited: 'Recruited',
+  recruitNotRecruited: 'Not recruited',
+  recruitUnused: 'Unused',
 };
 
 const locales = { 'zh-CN': zhCN, 'en-US': enUS };

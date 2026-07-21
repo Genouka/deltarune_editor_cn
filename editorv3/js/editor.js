@@ -13,6 +13,7 @@ import {
   LIGHTWORLDITEMS, LIGHTWORLDITEMS_META, PHONECONTACTS, PHONECONTACTS_META,
   SAVE_META, getNameByIndex, metaToOptions, getMetaByIndex, setLocaleMap,
 } from './data.js';
+import { ENEMIES_META, RECRUITS, CAFE_SEATS } from './enemies-meta.js';
 import { FLAGS_META } from './flags-meta.js';
 import { STORY_SECTIONS } from './story-sections.js';
 import { LOCALE } from './data-locale.js';
@@ -262,6 +263,7 @@ function renderCurrentPage() {
     case 'lightworld': root.appendChild(renderLightWorldSection(s)); break;
     case 'flags': root.appendChild(renderFlagsSection(s)); break;
     case 'story': root.appendChild(renderStorySection(s)); break;
+    case 'recruits': root.appendChild(renderRecruitsSection(s)); break;
   }
 }
 
@@ -922,6 +924,186 @@ function collectEdits() {
       s.flags[idx] = Number(select.value) || 0;
     }
   });
+
+  // 招募页面 - Cafe 座位
+  CAFE_SEATS.forEach(seat => {
+    const select = document.getElementById(seat.id);
+    if (select && seat.flag < s.flags.length) {
+      s.flags[seat.flag] = Number(select.value) || 0;
+    }
+  });
+  // 招募 checkbox
+  document.querySelectorAll('[id^="recruit-cb-"]').forEach(cb => {
+    const idx = parseInt(cb.dataset.flagIndex);
+    const recruitCount = parseInt(cb.dataset.recruitCount) || 1;
+    if (idx >= 0 && idx < s.flags.length) {
+      s.flags[idx] = cb.checked ? 1 : 0;
+    }
+  });
+  // 招募数量输入
+  document.querySelectorAll('[id^="recruit-num-"]').forEach(input => {
+    const idx = parseInt(input.dataset.flagIndex);
+    const recruitCount = parseInt(input.dataset.recruitCount) || 1;
+    if (idx >= 0 && idx < s.flags.length) {
+      let value = parseInfNum(input.value);
+      if (recruitCount > 1 && value !== 0 && value !== -1) {
+        value = value / recruitCount;
+      }
+      s.flags[idx] = value;
+    }
+  });
+}
+
+// ========== 招募页面 ==========
+function renderRecruitsSection(s) {
+  const sec = el('div', 'section');
+  sec.innerHTML = `<div class="section-title">${t('sectionRecruits')}</div>`;
+
+  const chapter = s.chapter || 2;
+  const showNonRecruitable = document.getElementById('show-non-recruitable')?.checked ?? false;
+
+  // 筛选当前章节及之前章节的可招募敌人
+  const enemies = Object.entries(ENEMIES_META)
+    .map(([idx, meta]) => ({ idx: Number(idx), ...meta }))
+    .filter(e => e.recruitFlag !== undefined && e.chapter <= chapter)
+    .filter(e => showNonRecruitable || e.recruitable)
+    .sort((a, b) => a.idx - b.idx);
+
+  // "显示不可招募" 复选框
+  const optRow = el('div', 'recruit-row');
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.id = 'show-non-recruitable';
+  cb.checked = showNonRecruitable;
+  const cbLabel = el('label', '');
+  cbLabel.htmlFor = 'show-non-recruitable';
+  cbLabel.textContent = t('showNonRecruitable');
+  cb.addEventListener('change', () => renderCurrentPage());
+  optRow.appendChild(cb);
+  optRow.appendChild(cbLabel);
+  sec.appendChild(optRow);
+
+  // Cafe 座位区
+  const cafeDiv = el('div', '');
+  cafeDiv.innerHTML = `<div class="section-title" style="font-size:14px;margin-top:12px">${t('cafeSeating')}</div>`;
+  const cafeGrid = el('div', 'cafe-grid');
+  for (const seat of CAFE_SEATS) {
+    const seatDiv = el('div', 'cafe-seat');
+    const seatLabel = el('label', '');
+    seatLabel.textContent = seat.label;
+    seatLabel.style.fontSize = '12px';
+    seatLabel.style.color = 'var(--text2)';
+    const select = document.createElement('select');
+    select.className = 'field-select';
+    select.id = seat.id;
+    select.dataset.flagIndex = seat.flag;
+    // 构建选项：0=空, 敌人索引
+    const emptyOpt = document.createElement('option');
+    emptyOpt.value = '0';
+    emptyOpt.textContent = '—';
+    select.appendChild(emptyOpt);
+    for (const [ridx, rname] of Object.entries(RECRUITS)) {
+      const opt = document.createElement('option');
+      opt.value = ridx;
+      opt.textContent = locName(null, ridx, 'RECRUITS') || rname;
+      select.appendChild(opt);
+    }
+    // 设置当前值
+    const currentVal = s.flags[seat.flag] || 0;
+    select.value = String(currentVal);
+    seatDiv.appendChild(seatLabel);
+    seatDiv.appendChild(select);
+    cafeGrid.appendChild(seatDiv);
+  }
+  cafeDiv.appendChild(cafeGrid);
+  sec.appendChild(cafeDiv);
+
+  // 招募敌人卡片网格
+  const grid = el('div', 'recruit-grid');
+  for (const enemy of enemies) {
+    const card = el('div', 'recruit-card');
+    if (!enemy.recruitable) card.classList.add('unused');
+    const inner = el('div', 'recruit-card-inner');
+
+    // 敌人名称
+    const nameEl = el('div', 'recruit-name');
+    const locEnemy = LOCALE.ENEMIES_META?.[enemy.idx];
+    nameEl.textContent = locEnemy || enemy.displayName;
+    inner.appendChild(nameEl);
+
+    // 状态
+    const flag = s.flags[enemy.recruitFlag] || 0;
+    const recruitCount = enemy.recruitCount ?? 1;
+    let currentRecruited = flag;
+    if (recruitCount > 1 && flag !== 0 && flag !== -1) {
+      currentRecruited = flag * recruitCount;
+    }
+    const statusEl = el('div', 'recruit-status');
+    let statusText, statusColor;
+    if (currentRecruited === -1) {
+      statusText = t('recruitLost');
+      statusColor = 'var(--err)';
+    } else if (currentRecruited === recruitCount) {
+      statusText = t('recruitRecruited');
+      statusColor = 'var(--ok)';
+    } else if (currentRecruited > 0) {
+      statusText = `${currentRecruited} / ${recruitCount}`;
+      statusColor = '#e5a00d';
+    } else {
+      statusText = t('recruitNotRecruited');
+      statusColor = '';
+    }
+    if (!enemy.recruitable) statusText += ' · ' + t('recruitUnused');
+    statusEl.textContent = statusText;
+    if (statusColor) nameEl.style.color = statusColor;
+    inner.appendChild(statusEl);
+
+    // 已招募 checkbox
+    const row = el('div', 'recruit-row');
+    const rcb = document.createElement('input');
+    rcb.type = 'checkbox';
+    rcb.id = `recruit-cb-${enemy.idx}`;
+    rcb.dataset.flagIndex = enemy.recruitFlag;
+    rcb.dataset.recruitCount = recruitCount;
+    rcb.checked = currentRecruited === recruitCount;
+    const rcbLabel = el('label', '');
+    rcbLabel.htmlFor = `recruit-cb-${enemy.idx}`;
+    rcbLabel.textContent = t('recruited');
+    row.appendChild(rcb);
+    row.appendChild(rcbLabel);
+    inner.appendChild(row);
+
+    // 招募数量输入
+    if (recruitCount > 1 || enemy.recruitable) {
+      const countDiv = el('div', 'recruit-count');
+      const countLabel = el('span', '');
+      countLabel.textContent = recruitCount > 1 ? t('recruitCount') : t('status');
+      const countInput = document.createElement('input');
+      countInput.type = 'text';
+      countInput.inputMode = 'numeric';
+      countInput.id = `recruit-num-${enemy.idx}`;
+      countInput.dataset.flagIndex = enemy.recruitFlag;
+      countInput.dataset.recruitCount = recruitCount;
+      countInput.value = currentRecruited;
+      countInput.style.width = '48px';
+      countInput.style.marginLeft = '4px';
+      countDiv.appendChild(countLabel);
+      countDiv.appendChild(countInput);
+      inner.appendChild(countDiv);
+    }
+
+    // 底部彩色条
+    const bar = el('div', 'recruit-bar');
+    if (statusColor) bar.style.background = statusColor;
+    else bar.style.background = 'var(--surface3)';
+    if (currentRecruited <= 0 && currentRecruited !== -1) bar.style.visibility = 'hidden';
+
+    card.appendChild(inner);
+    card.appendChild(bar);
+    grid.appendChild(card);
+  }
+  sec.appendChild(grid);
+  return sec;
 }
 
 // ========== 关于页面 ==========
