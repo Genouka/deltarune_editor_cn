@@ -1111,9 +1111,14 @@ function renderAboutSection() {
   const sec = el('div', 'about-page');
   sec.innerHTML = `
     <h2>QM-Editor</h2>
-    <div class="about-version">v3 - DELTARUNE 存档编辑器</div>
+    <div class="about-version">秋冥 DELTARUNE 存档编辑器 qm-editor v7.0</div>
     <div class="about-author">${t('aboutAuthor')}</div>
-    <div class="about-site"><a href="https://dreditorcn.genouka.top/" target="_blank" rel="noopener">https://dreditorcn.genouka.top/</a></div>
+    <div class="about-site">
+      <p>Copyright © 2025-2026 秋冥散雨_GenOuka</p>
+      <p><a href="https://dreditorcn.genouka.top/" target="_blank" rel="noopener">https://dreditorcn.genouka.top/</a></p>
+      <p><a href="https://genouka.top/" target="_blank" rel="noopener">https://genouka.top/</a></p>
+      <p><a href="https://genouka.top/"><img src="https://genouka.top/suptcycle.png" alt="秋冥项目维护周期"/></a></p>
+    </div>
     ${Platform.type === 'jsbridge' ? `<div class="about-legacy"><a href="/v2/editor/" target="_blank" rel="noopener">${t('aboutLegacy')}</a></div>` : ''}
   `;
   return sec;

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>QM-Editor - DELTARUNE 存档编辑器</title>
+<script defer src="https://status.genouka.top/script.js" data-website-id="5f7bc751-d2a6-4eaf-a521-37d6c6e4a45c"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -192,7 +193,6 @@ a{color:var(--accent3)}
   <div class="content-area" id="editor-root">
     <div class="section" style="text-align:center;color:var(--text2);padding:40px">
       选择文件或输入文件名加载存档<br>
-      <small>支持 ?filename=file_ch2_0 形式的 URL 参数</small>
     </div>
   </div>
 </div>
@@ -200,5 +200,16 @@ a{color:var(--accent3)}
 <div id="toast" class="toast"></div>
 
 <script type="module" src="./js/editor.js?v=7"></script>
+<script type="text/javascript">
+  (() => {
+    const name = 'outbound-link-click';
+    document.querySelectorAll('a').forEach(a => {
+      if (a.host !== window.location.host && !a.getAttribute('data-umami-event')) {
+        a.setAttribute('data-umami-event', name);
+        a.setAttribute('data-umami-event-url', a.href);
+      }
+    });
+  })();
+</script>
 </body>
 </html>
